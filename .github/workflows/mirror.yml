@@ -1,0 +1,24 @@
+name: Mirroring to main repo
+
+on:
+  push:
+    branches:
+      - main # 혹은 미러링하고 싶은 메인 브랜치 이름 (모든 push에 반응하게 하려면 지워도 됨)
+  workflow_dispatch: # 수동으로도 실행할 수 있게 설정
+
+jobs:
+  to_mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 전체 커밋 히스토리를 가져와야 완벽한 미러링이 가능합니다.
+
+      - name: Mirror to main repo
+        uses: wearerequired/git-mirror-action@v1
+        env:
+          SSH_PRIVATE_KEY: "" # SSH가 아닌 토큰 방식을 쓸 것이므로 비워둡니다.
+        with:
+          # 메인 계정의 목적지 레포지토리 주소 (형식에 주의하세요)
+          target-directory: "https://x-access-token:${{ secrets.TARGET_TOKEN }}@github.com/kimnioyh/hancom.git"
