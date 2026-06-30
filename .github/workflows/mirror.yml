@@ -21,4 +21,5 @@ jobs:
           SSH_PRIVATE_KEY: "" # SSH가 아닌 토큰 방식을 쓸 것이므로 비워둡니다.
         with:
           # 메인 계정의 목적지 레포지토리 주소 (형식에 주의하세요)
-          target-directory: "https://x-access-token:${{ secrets.TARGET_TOKEN }}@github.com/kimnioyh/hancom.git"
+          # 사용하신 wearerequired/git-mirror-action 플러그인 버전이 업데이트되면서, 입력 매개변수 이름이 target-directory에서 destination-repo로 바뀌었기 때문에 발생한 문제입니다.
+          destination-repo: "https://x-access-token:${{ secrets.TARGET_TOKEN }}@github.com/kimnioyh/hancom.git"
