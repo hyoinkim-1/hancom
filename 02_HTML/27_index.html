@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        details{
+            height: 70px;
+        }
+    </style>
+    <title>html details/summary</title>
+</head>
+<body>
+    <h1>접기</h1>
+    <details open name="chooseone">
+        <summary>1번</summary>
+        <p>1</p>
+    </details>
+    <details name="chooseone">
+        <summary>2번</summary>
+        <p>2</p>
+    </details>
+    <details name="chooseone">
+        <summary>3번</summary>
+        <p>3</p>
+    </details>
+</body>
+</html>
+
+
+<!-- 
+- `<details>` : 접었다 폈다 할 수 있는 드롭박스 요소 ex) `<details open name="chooseone">`
+    - attribute
+        - open : 속성값이 있는 경우 기본이 열린 상태
+        - name : 여러 details 요소와 연결해 그룹핑 가능. 하나를 열면 다른게 닫힘
+-->

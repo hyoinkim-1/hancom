@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>이미지 경로</title>
+</head>
+<body>
+    <h1>이미지 경로 설정</h1>
+    <img src="./123.jpg" alt="상대경로-현재 디렉토리">
+    <img src="../234.jpg" alt="상대경로-상위 디렉토리">
+    <img src="https://picsum.photos/80" alt="절대경로-URI">
+    <img src="../../../Downloads/345.jpg" alt="이것도 불가능">
+    <!-- 
+    <img src="~/Users/Har26/Downloads/345.jpg" alt="이것도 절대경로">
+    <img src=""C:\Users\Har26\Downloads\345.jpg"" alt="절대경로-파일탐색기"> 
+    live server 이용할 시 보안 정책 때문에 절대경로로 파일 불러오는 것 불가
+    웹서버를 통해서가 아닌 로컬에서 22_index.html 파일 열기로는 절대경로 불러오는 것 가능
+    -->
+</body>
+</html>
+
+
+<!-- 
+- 상대경로/ 절대경로 :
+    - `./workingDir` : 현재 디렉토리 기준
+    - `../parentDir` : 상위 디렉토리 기준
+    - `~/rootDir` : 루트디렉토리 기준
+-->

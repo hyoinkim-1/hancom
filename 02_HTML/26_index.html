@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>표 칸 합치기</title>
+</head>
+<body>
+    <h1>표 합치기-colspan rowspan</h1>
+    <table border="1">
+        <thead> 
+            <tr><th colspan="3">성적표</th></tr>
+        </thead>
+        <tbody>
+            <tr><td rowspan="4">과목</td><td>국어</td><td>90</td></tr>
+            <tr><td>영어</td><td>85</td></tr>  <!-- 위의 행에 rowspan 값이 있는 데이터가 있기 때문에 데이터 셀 2칸만 채워도 됨-->
+            <tr><td>수학</td><td>22</td></tr>
+            <tr><td>과학</td><td>11</td></tr>
+            <tr><td colspan="2">평균</td><td>재수</td></tr>
+        </tbody>
+    </table>
+</body>
+</html>
+
+
+
+
+
+<!-- 
+
+3 3 3
+4 1 1
+4 1 1
+4 1 1
+4 1 1
+2 2 1
+
+과 같은 구조
+
+thead : 테이블의 열 머리글들인 행 집합(표 제목들)
+tbody : 테이블 메인데이터 값들의 행 집합
+
+속성값
+colspan : 차지하는 column 수 (가로로 몇개 차지하는지)
+rowspan : 차지하는 row 수 (세로로 몇개 차지하는지)
+
+접근성 측면에서 헤더가 두개 존재하는 경우
+scope 속성을 통해 row인지 column인지 명시해주는 것이 좋다.
+-->
+

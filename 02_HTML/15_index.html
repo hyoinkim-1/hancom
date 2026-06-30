@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        입력 폼
+    </title>
+</head>
+<body>
+    <form action="./submit" method="get" target="_self"> 
+        <label for="name">
+            이름 : 
+            <input type="text" placeholder="이름 입력" name="name" id="name">
+        </label>
+        <br>
+        <label for="age">
+            나이 : 
+            <input type="number" name="age" id="age">
+        </label>
+        <br>
+        <button type="submit">보내기</button>
+    </form>
+</body>
+</html>
+
+<!--
+- `<form>`
+    - attribute
+        - `action`  : 양식 데이터 처리할 프로그램의 URI
+        - `method`  : 데이터 제출 시 사용할 http method
+            - `post`  : 데이터를 request 본문으로 제출
+            - `get`  : 데이터를 URL + `?` 로 연결되는 쿼리스트링으로 제출
+        - `target`  : 양식 제출 결과를 표시할 위치를 나타냄
+            - _self (default)
+            - _blank : 새 탭 or 새 브라우저
+            - _parent , _top
+    - `<label>`
+        - attribute
+            - `for` : 레이블 가능한 form-related 요소의 `id` 속성값. 라벨 내에 중첩된
+            `input`의 경우는 연관이 암시적으로 이루어져 `for`, `id` 가 명시적으로 필요하지 않다.
+    - `<input>`
+        - attribute
+            - `type`
+                - text, number, radio, checkbox,
+    - `<button>`
+-->
