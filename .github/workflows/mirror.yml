@@ -3,7 +3,7 @@ name: Mirroring to main repo
 on:
   push:
     branches:
-      - main # 혹은 미러링하고 싶은 메인 브랜치 이름 (모든 push에 반응하게 하려면 지워도 됨)
+      - master # 혹은 미러링하고 싶은 메인 브랜치 이름 (모든 push에 반응하게 하려면 지워도 됨)
   workflow_dispatch: # 수동으로도 실행할 수 있게 설정
 
 jobs:
