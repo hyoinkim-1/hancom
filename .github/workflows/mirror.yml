@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  if: "github.repository == 'hyoinkim-1/hancom'"
   to_mirror:
+    if: "github.repository == 'hyoinkim-1/hancom'"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
