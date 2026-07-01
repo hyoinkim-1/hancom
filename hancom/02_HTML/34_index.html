@@ -5,23 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>34th</title>
 </head>
-<body>
+<body id="top">
     <header>
-        <h1>자기소개 페이지</h1>
+        <h1>김효인 자기소개 페이지</h1>
+            <img src="../345.jpg" alt="사진"><br>
+            <nav>
+                <table border="1">
+                    <tr>
+                        <td><a href="#intro">내 소개로 가기</a></td>
+                        <td><a href="#contact">연락처로 가기</a></td>
+                        <td><a href="#hobby">취미로 가기</a></td>
+                    </tr>
+                </table>          
+            </nav>
     </header>
+    <hr>
+
     <main>
-        <section>
-            자기소개 페이지
+        <section id="intro">
+            저는 웹개발자 김효인입니다
         </section>
 
-        <section>
-            <form action="">
-                <label><input type="text">이건그거</label>
-                <label><input type="text">저건그거</label>
+        <section id="contact">
+            <form action="/contact" method="post">
+                <a href="tel:내전화">전화</a> <br>
+                <a href="mailto:내메일">메일</a> <br>
+                <label>할말: <input type="text" placeholder="text"></label> <br>
+                <button type="submit">보내기</button>
             </form>
         </section>
+        <br>
 
-        <section>
+        <section id="hobby">
             <table border="1">
                 <thead>
                     <tr>
@@ -39,12 +54,14 @@
                     </tr>
             </table>
         </section>
+        <br>
     </main>
     <aside>
         
     </aside>
     <footer>
         &copy; 2026
+        <a href="#top">맨 위로 가기</a>
     </footer>    
 </body>
 </html>
