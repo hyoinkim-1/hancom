@@ -1,0 +1,26 @@
+/* body => h1, img, p, ul 요소 => 클래스 => a : 일반 => 구체 순서 */
+
+h1{
+    color: red;
+}
+
+p{
+    display: flex;
+    font-size: 25px;
+    color: green;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.flextest{
+    display: flex;
+}
+
+.special{
+    color: orange;
+}
+
+li>em{
+    color: purple;
+}
