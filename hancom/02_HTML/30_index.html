@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>음성 넣기</title>
+</head>
+<body>
+    <audio controls loop autoplay>
+        <source src="../audio.mp4" type="audio/mpeg">
+        <source src="" type="">
+        내 브라우저는 audio 미지원
+    </audio>
+</body>
+</html>
+
+
+<!--
+- `<audio>` : 음성 파일 임베딩
+    - 속성
+        - src : 대신 `<source>` 사용 가능
+        - controls
+        - autoplay
+
+- `<source>` : picture,audio, video 태그에 대한 src속성을 대신해 사용가능. void element
+    - 속성
+        - src
+        - type : 이미지, 미디어의 파일 형식
+-->

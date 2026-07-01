@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="top">
+        <div class="box">
+            <ul>
+                <li class="card"><a href="1">링크</a></li>
+                <li class="card"><a href="1">링크</a></li>
+                <li class="card"><a href="1">링크</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<!-- 
+`div#top>div.box>ul>li.card*3>a[href=1]{링크}` 같은것도 가능
+
+```html
+    <div id="top">
+        <div class="box">
+            <ul>
+                <li class="card"><a href="1">링크</a></li>
+                <li class="card"><a href="1">링크</a></li>
+                <li class="card"><a href="1">링크</a></li>
+            </ul>
+        </div>
+    </div>
+```
+
+- `>`  : 자식태그
+- *N : 반복
+- .class : 클래스붙이기
+- #id : 아이디 붙이기
+- {content} : 컨텐츠 채우기
+- [att = val] : 속성 채우기
+-->
