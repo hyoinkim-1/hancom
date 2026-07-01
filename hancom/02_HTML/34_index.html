@@ -7,36 +7,60 @@
 </head>
 <body id="top">
     <header>
-        <h1>김효인 자기소개 페이지</h1>
-            <img src="../345.jpg" alt="사진"><br>
-            <nav>
-                <table border="1">
-                    <tr>
-                        <td><a href="#intro">내 소개로 가기</a></td>
-                        <td><a href="#contact">연락처로 가기</a></td>
-                        <td><a href="#hobby">취미로 가기</a></td>
-                    </tr>
-                </table>          
-            </nav>
+        <nav>
+            <table>
+                <tr>
+                    <td><a href="#contact">연락처로 가기</a></td>
+                    <td><a href="#hobby">취미로 가기</a></td>
+                </tr>
+            </table>          
+        </nav>
     </header>
     <hr>
 
     <main>
         <section id="intro">
-            저는 웹개발자 김효인입니다
+            <h3>내 소개</h3>
+            <img width="100px" height="100px" src="../../profile.png" alt="사진"><br>
+            안녕하세요. html부터 차근차근 다시 복습하고 있는 웹 개발자 김효인입니다.
         </section>
 
         <section id="contact">
+            <h3>Contact</h3>
             <form action="/contact" method="post">
-                <a href="tel:내전화">전화</a> <br>
-                <a href="mailto:내메일">메일</a> <br>
+                <a href="tel:내전화">전화</a>
+                <a href="mailto:내메일">메일</a>
+                <a href="https://github.com/kimnioyh" target="_blank">깃허브</a>
                 <label>할말: <input type="text" placeholder="text"></label> <br>
                 <button type="submit">보내기</button>
             </form>
         </section>
         <br>
 
+        <section id="skills">
+            <h3>Skills</h3>
+            <ol>
+                <li>
+                    <div>FE</div>
+                    <ul>
+                        <li>html css js ts</li>
+                        <li>react vue</li>
+                    </ul>
+                </li>
+
+                <li>
+                    <div>BE</div>
+                    <ul>
+                        <li>python java</li>
+                        <li>django</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+
+
         <section id="hobby">
+            <h3>기타 등등</h3>
             <table border="1">
                 <thead>
                     <tr>
@@ -45,12 +69,12 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>취미1</td>
-                        <td>취미2</td>
+                        <td>게임</td>
+                        <td>운동</td>
                     </tr>
                     <tr>
-                        <td>취미3</td>
-                        <td>취미4</td>
+                        <td>독서</td>
+                        <td>..etc</td>
                     </tr>
             </table>
         </section>
