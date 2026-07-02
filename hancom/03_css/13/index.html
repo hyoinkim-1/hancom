@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <title>2차원 격자</title>
+</head>
+<body>
+    <div class="grid">
+        <div class="card">카드 1</div>
+        <div class="card">카드 2</div>
+        <div class="card">카드 3</div>
+        <div class="card">카드 4</div>
+        <div class="card">카드 5</div>
+        <div class="card">카드 6</div>
+    </div>
+</body>
+</html>
+
+
+<!-- - grid : 격자 display
+    - `display: grid` 설정
+    - `grid-template-columns: repeat(2, 1fr 2fr)` : 화면 2분할, fr(fraction) 기준 1:2로 분할
+        
+        - fr 대신 px, rem, % 등 다른 단위도 사용가능
+        - %대신 fr을 쓰는 이유 : gap너비를 제외한 나머지 영역에 대해서만 분할하기 때문에 %대신 fr 권장 -->
