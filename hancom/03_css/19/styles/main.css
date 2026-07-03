@@ -1,11 +1,11 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-    scrollbar-gutter: stable;
+  scrollbar-gutter: stable;
 }
 
 .main-content{
@@ -14,6 +14,7 @@ html {
     gap: 20px;
     padding: 10px;
     align-items: center;
+    justify-content: center;
 }
 
 pre{
@@ -31,7 +32,7 @@ pre{
 .radio-input {
   display: flex;
   flex-direction: column;
-  padding: 12px;
+  padding: 13px;
   background: #fff;
   color: #000;
   border-radius: 10px;
@@ -54,12 +55,12 @@ pre{
 }
 
 .steps {
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(0, 0, 0,0.5);
   padding: 4px;
   color: #fff;
   border-radius: 4px;
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 13px;
+  line-height: 13px;
   font-weight: 600;
 }
 
@@ -85,7 +86,7 @@ pre{
 .result {
   margin-top: 10px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   display: none;
   transition: display .4s ease;
 }
@@ -136,4 +137,64 @@ pre{
 }
 .answer li{
     list-style-type: none;
+}
+
+
+
+
+
+
+
+
+.til-section{
+  display: flex;
+  flex-direction: column;
+  padding: 13px;
+  background: #fff;
+  color: #000;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  width: 1000px;
+}
+
+.til-grid{
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(3,1fr);
+}
+
+.til-box{
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.til-title{
+  position: relative;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding-left: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.tag{
+  position: absolute;
+  top: 4px;
+  right: 1px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 400;
+  color: white;
+}
+
+.til-content{
+  padding: 5px;
+  margin: 5px;
+  font-size: 13px;
+  font-weight: 400;
 }
