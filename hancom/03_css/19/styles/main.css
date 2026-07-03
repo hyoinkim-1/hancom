@@ -13,7 +13,7 @@ html {
   --color-black: #000;
   --color-black-50: rgba(0, 0, 0, 0.5);
   --color-text-gray: rgb(49, 49, 49);
-  --color-gray-light-rgb: 187, 187, 187;
+  --color-gray-light-rgb: rgb(187, 187, 187);
   --color-label-hover-bg: rgba(24, 24, 24, 0.13);
   --color-success: green;
   --color-error: red;
@@ -172,8 +172,8 @@ pre{
 }
 
 .til-box{
+  border: 1px solid var(--color-gray-light-rgb);
   border-radius: 10px;
-  border: 1px solid var(--color-black-50);
   padding: 5px;
   box-shadow: 0 1px 1px var(--color-black-50);
 }
@@ -185,7 +185,7 @@ pre{
   margin-bottom: 10px;
   padding-left: 5px;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--color-black-50);
+  border-bottom: 1px solid var(--color-gray-light-rgb);
 }
 
 .tag{
@@ -205,4 +205,46 @@ pre{
   margin: 5px;
   font-size: 13px;
   font-weight: 400;
+}
+
+.container{
+  padding: 13px;
+  background: var(--color-white);
+  color: var(--color-black);
+  border-radius: 10px;
+  border: 1px solid var(--color-black-50);
+  width: 1000px;
+  min-height: 100px;
+}
+
+
+.imgbox{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 300px;
+  border: 1px solid var(--color-gray-light-rgb);
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.cap-pic{
+  max-width: 800px;
+  max-height: 290px;
+}
+
+.cap{
+  top: 10px;
+  right: 10px;
+  font-size: 15px;
+}
+
+.desc{
+  margin: 13px;
+  font-size: 17px;
+  color: var(--color-black);
 }
