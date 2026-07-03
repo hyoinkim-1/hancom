@@ -1,0 +1,27 @@
+:root{
+    --main-color: rgba(0, 0, 255, 0.548);
+    --gap: 20px;
+}
+
+p{
+    --main-color:red;
+}
+
+.row{
+    display: flex;
+    gap: var(--gap);
+}
+
+.btn{
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--main-color);
+    color: white;
+    font-weight: bold;
+    cursor: wait;
+}
+
+p.test{
+    background-color: var(--main-color);
+}
