@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+.main-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+    align-items: center;
+}
+
+pre{
+    margin:0px 50px;
+    padding: 10px;
+    font-weight: 300;
+    background-color: beige;
+    border-radius: 5px;
+}
+
+.radio-input input {
+  display: none;
+}
+
+.radio-input {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: #fff;
+  color: #000;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  width: 1000px;
+}
+
+.info {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.question {
+  color: rgb(49, 49, 49);
+  font-size: 1rem;
+  line-height: 1rem;
+  font-weight: 800;
+}
+
+.steps {
+  background-color: rgb(0, 0, 0);
+  padding: 4px;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 600;
+}
+
+.radio-input  label {
+  display: flex;
+  background-color: #fff;
+  padding: 14px;
+  margin: 8px 0 0 0;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid rgba(187, 187, 187, 0.164);
+  color: #000;
+  transition: .3s ease;
+}
+
+.radio-input  label:hover {
+  background-color: rgba(24, 24, 24, 0.13);
+  border: 1px solid #bbb;
+}
+
+.result {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 12px;
+  display: none;
+  transition: display .4s ease;
+}
+
+.result.success {
+  color: green;
+}
+
+.result.error {
+  color: red;
+}
+
+.radio-input input:checked + label {
+  border-color: red;
+  color: red;
+}
+
+/* 문제별 정답 value: q1~q4는 value-2, q5는 value-1 */
+.q1 input[value="value-2"]:checked + label,
+.q2 input[value="value-2"]:checked + label,
+.q3 input[value="value-2"]:checked + label,
+.q4 input[value="value-2"]:checked + label,
+.q5 input[value="value-1"]:checked + label {
+  border-color: rgb(22, 245, 22);
+  color: rgb(16, 184, 16);
+}
+
+.q1:has(input[value="value-2"]:checked) .result.success,
+.q2:has(input[value="value-2"]:checked) .result.success,
+.q3:has(input[value="value-2"]:checked) .result.success,
+.q4:has(input[value="value-2"]:checked) .result.success,
+.q5:has(input[value="value-1"]:checked) .result.success {
+  display: flex;
+}
+
+.q1:has(input:not([value="value-2"]):checked) .result.error,
+.q2:has(input:not([value="value-2"]):checked) .result.error,
+.q3:has(input:not([value="value-2"]):checked) .result.error,
+.q4:has(input:not([value="value-2"]):checked) .result.error,
+.q5:has(input:not([value="value-1"]):checked) .result.error {
+  display: flex;
+}
+
+.answer{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px;
+}
+.answer li{
+    list-style-type: none;
+}

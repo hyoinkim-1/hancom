@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/nav.css">
+    <link rel="icon" href="./assets/favicon.ico">
+    <title>퀴즈 풀기</title>
+</head>
+<body>
+    <main class="main-content">
+        <div class="radio-input q1">
+            <div class="info">
+                <div class="question">다음 중 &lt;article&gt; 태그의 올바른 사용처는 어디일까요?</div>
+                <div class="steps">1/5</div>
+            </div>
+            <input type="radio" name="q1" id="q1-1" value="value-1">
+            <label for="q1-1">① 페이지의 전체적인 구조를 감싸는 용도</label>
+            <input type="radio" name="q1" id="q1-2" value="value-2">
+            <label for="q1-2">② 그 자체로 완결된 글(카드, 뉴스 기사, 블로그 글 등)</label>
+            <input type="radio" name="q1" id="q1-3" value="value-3">
+            <label for="q1-3">③ 네비게이션 링크들을 감싸는 용도</label>
+            <input type="radio" name="q1" id="q1-4" value="value-4">
+            <label for="q1-4">④ 사이드바나 광고 영역 같은 보조 콘텐츠</label>
+            <div class="result">
+                <div class="result success">정답입니다! &lt;article&gt;은 그 자체로 완결된 글에 사용합니다.</div>
+                <div class="result error">오답입니다. 정답은 ②번입니다.</div>
+            </div>
+            <details class="answer">
+                <summary>해설 보기</summary>
+                <ul>
+                    <li><code class="code-block">&lt;article&gt;</code>: 그 자체로 완결된 글에 사용 (카드, 뉴스, 블로그 글 등)</li>
+                    <li><code class="code-block">&lt;main&gt;</code>: 페이지의 주요 콘텐츠 감싸기</li>
+                    <li><code class="code-block">&lt;nav&gt;</code>: 네비게이션 링크들 감싸기</li>
+                    <li><code class="code-block">&lt;aside&gt;</code>: 보조 콘텐츠 (사이드바, 광고 등)</li>
+                </ul>
+                <p>시맨틱 태그는 의미를 명확히 해주기 때문에 접근성과 SEO 측면에서 중요합니다.</p>
+            </details>
+        </div>
+
+        <div class="radio-input q2">
+            <div class="info">
+                <div class="question">다음 중 padding과 margin의 차이를 가장 정확하게 설명한 것은?</div>
+                <div class="steps">2/5</div>
+            </div>
+            <input type="radio" name="q2" id="q2-1" value="value-1">
+            <label for="q2-1">① Padding은 외부 여백, Margin은 내부 여백이다</label>
+            <input type="radio" name="q2" id="q2-2" value="value-2">
+            <label for="q2-2">② Padding은 내부 여백, Margin은 외부 여백이다</label>
+            <input type="radio" name="q2" id="q2-3" value="value-3">
+            <label for="q2-3">③ 둘 다 같은 기능을 하는데 이름만 다르다</label>
+            <input type="radio" name="q2" id="q2-4" value="value-4">
+            <label for="q2-4">④ Padding은 색상 적용이 되지만, Margin은 안 된다</label>
+            <div class="result">
+                <div class="result success">정답입니다! Padding은 내부 여백, Margin은 외부 여백입니다.</div>
+                <div class="result error">오답입니다. 정답은 ②번입니다.</div>
+            </div>
+            <details class="answer">
+                <summary>해설 보기</summary>
+                <ul>
+                    <li><strong>Padding</strong>: 요소의 콘텐츠와 테두리 사이의 내부 여백</li>
+                    <li><strong>Margin</strong>: 요소의 테두리와 다른 요소 사이의 외부 여백</li>
+                </ul>
+            </details>
+        </div>
+
+        <div class="radio-input q3">
+            <div class="info">
+                <div class="question">카드 우상단에 "NEW" 뱃지를 겹쳐 띄우려면 position 값으로 무엇이 가장 적절할까요?</div>
+                <div class="steps">3/5</div>
+            </div>
+            <input type="radio" name="q3" id="q3-1" value="value-1">
+            <label for="q3-1">① position: absolute; (뱃지만)</label>
+            <input type="radio" name="q3" id="q3-2" value="value-2">
+            <label for="q3-2">② position: relative; (카드) + position: absolute; (뱃지)</label>
+            <input type="radio" name="q3" id="q3-3" value="value-3">
+            <label for="q3-3">③ position: fixed; (뱃지만)</label>
+            <input type="radio" name="q3" id="q3-4" value="value-4">
+            <label for="q3-4">④ position: sticky; (카드) + position: relative; (뱃지)</label>
+            <div class="result">
+                <div class="result success">정답입니다! 부모 relative + 자식 absolute 조합이 정답입니다.</div>
+                <div class="result error">오답입니다. 정답은 ②번입니다.</div>
+            </div>
+            <details class="answer">
+                <summary>해설 보기</summary>
+                <pre><code class="code-block">.card { position: relative; }   /* 부모 기준점 */
+.badge { position: absolute; top: 10px; right: 10px; }</code></pre>
+                <ul>
+                    <li><strong>①번</strong>: 부모가 static이면 뷰포트 기준으로 고정되어 카드 위치와 상관없이 같은 자리에 뜸</li>
+                    <li><strong>②번 (정답)</strong>: 부모를 relative로 설정하면 자식 absolute가 부모를 기준으로 배치됨</li>
+                    <li><strong>③번</strong>: 화면 전체를 기준으로 고정되어 부적절함</li>
+                    <li><strong>④번</strong>: sticky는 스크롤 시 고정되는 용도라 이 상황에는 맞지 않음</li>
+                </ul>
+            </details>
+        </div>
+
+        <div class="radio-input q4">
+            <div class="info">
+                <div class="question">아래 CSS에서 fr 단위를 사용하는 이유는 무엇일까요?</div>
+                <div class="steps">4/5</div>
+            </div>
+            <pre class="code-block"><code class="code-block">.container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, 1fr 2fr);
+}</code></pre>
+            <input type="radio" name="q4" id="q4-1" value="value-1">
+            <label for="q4-1">① px, rem 같은 고정 단위보다 계산이 빠르다</label>
+            <input type="radio" name="q4" id="q4-2" value="value-2">
+            <label for="q4-2">② gap의 너비를 제외한 나머지 영역에 대해서만 분할하기 때문</label>
+            <input type="radio" name="q4" id="q4-3" value="value-3">
+            <label for="q4-3">③ 모든 브라우저에서 비율을 똑같이 표현하기 위함</label>
+            <input type="radio" name="q4" id="q4-4" value="value-4">
+            <label for="q4-4">④ 반응형 디자인을 자동으로 구현하기 위함</label>
+            <div class="result">
+                <div class="result success">정답입니다! fr은 gap을 제외한 영역만 분할합니다.</div>
+                <div class="result error">오답입니다. 정답은 ②번입니다.</div>
+            </div>
+            <details class="answer">
+                <summary>해설 보기</summary>
+                <p><code class="code-block">%</code> 대신 <code class="code-block">fr</code>을 사용하는 이유는 gap 처리 때문입니다.</p>
+                <ul>
+                    <li><strong>%</strong>: gap을 포함한 전체 너비 기준으로 계산 → 부정확</li>
+                    <li><strong>fr</strong>: gap을 제외한 실제 콘텐츠 영역 기준 계산 → 정확</li>
+                </ul>
+            </details>
+        </div>
+
+        <div class="radio-input q5">
+            <div class="info">
+                <div class="question">다음 CSS 코드 중 가장 올바른 가상클래스 순서는 어느 것일까요?</div>
+                <div class="steps">5/5</div>
+            </div>
+            <input type="radio" name="q5" id="q5-1" value="value-1">
+            <label for="q5-1">
+                <div>① 코드 A</div>
+                <pre><code class="code-block">a:link { color: blue; }
+a:visited { color: purple; }
+a:hover { color: red; }
+a:active { color: orange; }</code></pre>
+            </label>
+            <input type="radio" name="q5" id="q5-2" value="value-2">
+            <label for="q5-2">
+                ② 코드 B
+                <pre><code class="code-block">a:hover { color: red; }
+a:link { color: blue; }
+a:active { color: orange; }
+a:visited { color: purple; }</code></pre>
+            </label>
+            <input type="radio" name="q5" id="q5-3" value="value-3">
+            <label for="q5-3">
+                ③ 코드 C
+                <pre><code class="code-block">a:active { color: orange; }
+a:visited { color: purple; }
+a:link { color: blue; }
+a:hover { color: red; }</code></pre>
+            </label>
+            <input type="radio" name="q5" id="q5-4" value="value-4">
+            <label for="q5-4">④ 모든 순서가 같게 작동한다</label>
+            <div class="result">
+                <div class="result success">정답입니다! LVHA 순서(코드 A)가 정답입니다.</div>
+                <div class="result error">오답입니다. 정답은 ①번입니다.</div>
+            </div>
+            <details class="answer">
+                <summary>해설 보기</summary>
+                <p>CSS는 나중에 작성된 규칙이 먼저 작성된 규칙을 덮어씁니다. 가상클래스는 반드시 <strong>LVHA</strong>(Link → Visited → Hover → Active) 순서로 작성해야 <code class="code-block">:hover</code>, <code class="code-block">:active</code>가 의도대로 동작합니다.</p>
+                <pre><code class="code-block">a:link { color: blue; }       /* 1순위 */
+a:visited { color: purple; }  /* 2순위 */
+a:hover { color: red; }       /* 3순위 */
+a:active { color: orange; }   /* 4순위 (가장 최신) */</code></pre>
+            </details>
+        </div>
+    </main>
+    <footer>
+        <nav class="nav-bar">
+            <button class="boton-elegante"><a href="web_inspect.html">웹페이지 분석</a></button>
+            <button class="boton-elegante"><a href="index.html">공부한 내용</a></button>
+        </nav>
+    </footer>
+</body>
+</html>
