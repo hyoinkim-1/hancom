@@ -8,6 +8,20 @@ html {
   scrollbar-gutter: stable;
 }
 
+:root{
+  --color-white: #fff;
+  --color-black: #000;
+  --color-black-50: rgba(0, 0, 0, 0.5);
+  --color-text-gray: rgb(49, 49, 49);
+  --color-gray-light-rgb: 187, 187, 187;
+  --color-label-hover-bg: rgba(24, 24, 24, 0.13);
+  --color-success: green;
+  --color-error: red;
+  --color-correct-border: rgb(22, 245, 22);
+  --color-correct-text: rgb(16, 184, 16);
+  --color-pre-bg: beige;
+}
+
 .main-content{
     display: flex;
     flex-direction: column;
@@ -21,7 +35,7 @@ pre{
     margin:0px 50px;
     padding: 10px;
     font-weight: 300;
-    background-color: beige;
+    background-color: var(--color-pre-bg);
     border-radius: 5px;
 }
 
@@ -33,10 +47,10 @@ pre{
   display: flex;
   flex-direction: column;
   padding: 13px;
-  background: #fff;
-  color: #000;
+  background: var(--color-white);
+  color: var(--color-black);
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--color-black-50);
   width: 1000px;
 }
 
@@ -48,16 +62,16 @@ pre{
 }
 
 .question {
-  color: rgb(49, 49, 49);
+  color: var(--color-text-gray);
   font-size: 1rem;
   line-height: 1rem;
   font-weight: 800;
 }
 
 .steps {
-  background-color: rgb(0, 0, 0,0.5);
+  background-color: var(--color-black-50);
   padding: 4px;
-  color: #fff;
+  color: var(--color-white);
   border-radius: 4px;
   font-size: 13px;
   line-height: 13px;
@@ -66,21 +80,21 @@ pre{
 
 .radio-input  label {
   display: flex;
-  background-color: #fff;
+  background-color: var(--color-white);
   padding: 14px;
   margin: 8px 0 0 0;
   font-size: 13px;
   font-weight: 400;
   border-radius: 10px;
   cursor: pointer;
-  border: 1px solid rgba(187, 187, 187, 0.164);
-  color: #000;
+  border: 1px solid rgba(var(--color-gray-light-rgb), 0.164);
+  color: var(--color-black);
   transition: .3s ease;
 }
 
 .radio-input  label:hover {
-  background-color: rgba(24, 24, 24, 0.13);
-  border: 1px solid #bbb;
+  background-color: var(--color-label-hover-bg);
+  border: 1px solid rgb(var(--color-gray-light-rgb));
 }
 
 .result {
@@ -92,16 +106,16 @@ pre{
 }
 
 .result.success {
-  color: green;
+  color: var(--color-success);
 }
 
 .result.error {
-  color: red;
+  color: var(--color-error);
 }
 
 .radio-input input:checked + label {
-  border-color: red;
-  color: red;
+  border-color: var(--color-error);
+  color: var(--color-error);
 }
 
 /* 문제별 정답 value: q1~q4는 value-2, q5는 value-1 */
@@ -110,8 +124,8 @@ pre{
 .q3 input[value="value-2"]:checked + label,
 .q4 input[value="value-2"]:checked + label,
 .q5 input[value="value-1"]:checked + label {
-  border-color: rgb(22, 245, 22);
-  color: rgb(16, 184, 16);
+  border-color: var(--color-correct-border);
+  color: var(--color-correct-text);
 }
 
 .q1:has(input[value="value-2"]:checked) .result.success,
@@ -144,30 +158,24 @@ pre{
 
 
 
-
-
-.til-section{
-  display: flex;
-  flex-direction: column;
-  padding: 13px;
-  background: #fff;
-  color: #000;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  width: 1000px;
-}
-
 .til-grid{
+  padding: 13px;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(3,1fr);
+
+  background: var(--color-white);
+  color: var(--color-black);
+  border-radius: 10px;
+  border: 1px solid var(--color-black-50);
+  width: 1000px;
 }
 
 .til-box{
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--color-black-50);
   padding: 5px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 1px var(--color-black-50);
 }
 
 .til-title{
@@ -177,19 +185,19 @@ pre{
   margin-bottom: 10px;
   padding-left: 5px;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid var(--color-black-50);
 }
 
 .tag{
   position: absolute;
   top: 4px;
   right: 1px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--color-black-50);
   padding: 3px 10px;
   border-radius: 20px;
   font-size: 10px;
   font-weight: 400;
-  color: white;
+  color: var(--color-white);
 }
 
 .til-content{
