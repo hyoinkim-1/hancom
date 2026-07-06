@@ -89,6 +89,7 @@ pre{
   cursor: pointer;
   border: 1px solid var(--color-gray-light-rgb, 0.164);
   color: var(--color-black);
+  box-shadow: 0 1px 1px var(--color-black-50);
   transition: .3s ease;
 }
 
@@ -217,6 +218,12 @@ pre{
   min-height: 100px;
 }
 
+.flexbox{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
 
 .imgbox{
   position: relative;
@@ -225,9 +232,10 @@ pre{
   align-items: center;
 
   height: 300px;
+  
   border: 1px solid var(--color-gray-light-rgb);
   border-radius: 10px;
-  margin: 20px;
+  box-shadow: 0 1px 1px var(--color-black-50);
   padding: 20px;
   overflow: hidden;
 }
