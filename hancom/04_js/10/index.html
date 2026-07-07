@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/main.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="greet">안녕하세요!</h1>
+    <input id="name" placeholder="이름">
+    <button id="save">저장</button>
+    <button id="reset">지우기</button>
+    <script src="./scripts/main.js"></script>
+</body>
+</html>
+
+<!-- 
+- localStorage : 로컬스토리지. `f12` 의 Application 탭에서 확인 가능. 페이지 프로토콜 별로 구분
+    - cf ) 쿠키, 세션
+    - `.getItem("key")` : key에 해당하는 value return
+    - `.setItem("key", value)`  : key값에 value 저장
+    - `.removeItem("key")` : 해당하는 key를 제거
+    - `.clear()` : 모든 키 제거 -->

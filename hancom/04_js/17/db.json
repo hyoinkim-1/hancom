@@ -1,0 +1,100 @@
+{
+  "users": [
+    {
+      "name": "Jane",
+      "num": "1",
+      "id": "9emHpLVcmT8"
+    },
+    {
+      "name": "John",
+      "num": "2",
+      "id": "JW70KptlT_g"
+    },
+    {
+      "name": "John",
+      "num": "3",
+      "id": "MWTcb3W3NDY"
+    },
+    {
+      "name": "John",
+      "num": "4",
+      "id": "Gr_DO5ycods"
+    },
+    {
+      "name": "John",
+      "num": "5",
+      "id": "1YQL0HWkhQE"
+    },
+    {
+      "name": "John",
+      "num": "6",
+      "id": "ZlgjJ7T9UoA"
+    },
+    {
+      "name": "John",
+      "num": "7",
+      "id": "DNGRbnhQQs8"
+    },
+    {
+      "name": "John",
+      "num": "8",
+      "id": "cWYdSXIrhoQ"
+    },
+    {
+      "name": "John",
+      "num": "9",
+      "id": "pXamQOETG6E"
+    },
+    {
+      "name": "John",
+      "num": "10",
+      "id": "F4MG4vx9A20"
+    },
+    {
+      "name": "John",
+      "num": "11",
+      "id": "xcnhG7egphE"
+    },
+    {
+      "name": "John",
+      "num": "12",
+      "id": "TBEBq0NlTYs"
+    },
+    {
+      "name": "John",
+      "num": "13",
+      "id": "4inVtCmiZ7I"
+    },
+    {
+      "name": "John",
+      "num": "14",
+      "id": "gQ-cjmaD1po"
+    },
+    {
+      "name": "John",
+      "num": "15",
+      "id": "rHinH4tH8Fo"
+    },
+    {
+      "name": "John",
+      "num": "16",
+      "id": "hLyQpHb7QT4"
+    },
+    {
+      "name": "John",
+      "num": "17",
+      "id": "v0PJjwPhlp8"
+    },
+    {
+      "name": "John",
+      "num": "18",
+      "id": "1aCWVEA-eYw"
+    },
+    {
+      "name": "John",
+      "num": "19",
+      "id": "tSzAoSLelAg"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
