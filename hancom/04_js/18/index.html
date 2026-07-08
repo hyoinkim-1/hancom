@@ -10,27 +10,19 @@
     <header id="header">
         <nav>
             <ul id="nav__container">
-                <li class="nav__item"><a href="#comp__1">투두</a></li>
-                <li class="nav__item"><a href="#comp__2">캐러셀</a></li>
-                <li class="nav__item"><a href="#comp__3">테이블</a></li>
+                <li class="nav__item"><a href="#comp__1">캐러셀</a></li>
+                <li class="nav__item"><a href="#comp__2">테이블</a></li>
+                <li class="nav__item"><a href="#comp__3">투두</a></li>
+                <li class="nav__item"><a href="./assets/readme.jpg" target="_blank">기능명세</a></li>
+                <li class="nav__item"><a href="./assets/prompt.jpg" target="_blank">css 프롬프트</a></li>
+
             </ul>
         </nav>
     </header>
     <main>
         <section class="container">
-            <!-- 투두 -->
-            <article class="card" id="comp__1">
-                <div class="card-title">투두</div>
-                <article class="todo">
-                    <form class="todo-form">
-                        <input class="todo-input" type="text" placeholder="todo 입력" autocomplete="off">
-                        <button class="todo-btn" type="submit">등록</button>
-                    </form>
-                    <ul class="todo-list"></ul>
-                </article>
-            </article>
             <!-- 캐러셀 -->
-            <article class="card" id="comp__2">
+            <article class="card" id="comp__1">
                 <div class="card-title">캐러셀</div>
                 <article class="carousel">
                     <div class="carousel__viewport">
@@ -66,9 +58,22 @@
                 </article>
             </article>
             <!-- 테이블 -->
-            <article class="card" id="comp__3">
-                <div class="card-title">테이블</div>
+            <article class="card" id="comp__2">
+                <div class="card-title">테이블:더미데이터로 테이블 렌더링하기</div>
+                <table class="table">
 
+                </table>
+            </article>
+            <!-- 투두 -->
+            <article class="card" id="comp__3">
+                <div class="card-title">투두</div>
+                <article class="todo">
+                    <form class="todo-form">
+                        <input class="todo-input" type="text" placeholder="todo 입력" autocomplete="off">
+                        <button class="todo-btn" type="submit">등록</button>
+                    </form>
+                    <ul class="todo-list"></ul>
+                </article>
             </article>
         </section>
     </main>
