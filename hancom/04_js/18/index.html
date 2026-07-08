@@ -4,10 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/main.css">
-    <title>ㅇㅅㅇ</title>
+    <title>컴포넌트 구현해보기</title>
 </head>
 <body>
-    
+    <header id="header">
+        <nav>
+            <ul id="nav__container">
+                <li class="nav__item"><a href="#comp__1">1</a></li>
+                <li class="nav__item"><a href="#comp__2">2</a></li>
+                <li class="nav__item"><a href="#comp__3">3</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="container">
+            <!-- 투두 -->
+            <article class="card" id="comp__1">
+                <div id="todo">
+                    투두
+                </div>
+            </article>
+            <!-- 캐러셀 -->
+            <article class="card" id="comp__2">
+                <article class="carousel">
+                    캐러셀
+                    <div class="carousel__viewport">
+                        <ul class="carousel__track">
+                            <li class="carousel__slide">
+                                <img class="carousel__img" src="./assets/1.jpg" alt="사진1">
+                            </li>
+                            <li class="carousel__slide">
+                                <img class="carousel__img" src="./assets/2.jpg" alt="사진2">
+                            </li>
+                            <li class="carousel__slide">
+                                <img class="carousel__img" src="./assets/3.jpg" alt="사진3">
+                            </li>
+                            <li class="carousel__slide">
+                                <img class="carousel__img" src="./assets/4.jpg" alt="사진4">
+                            </li>
+                            <li class="carousel__slide">
+                                <img class="carousel__img" src="./assets/5.jpg" alt="사진5">
+                            </li>
+                            <li class="carousel__slide">
+                                <img class="carousel__img" src="./assets/6.jpg" alt="사진6">
+                            </li>
+                            <li class="carousel__slide">
+                                <img class="carousel__img" src="./assets/1.jpg" alt="사진1">
+                            </li>
+                        </ul>
+                        <div class="carousel__btn-container">
+                            <button class="carousel__btn left">⬅️</button>
+                            <button class="carousel__btn right active">➡️</button>
+                            <button class="carousel__btn pause">⏸️</button>
+                        </div>
+                    </div>
+                </article>
+            </article>
+            <!-- 테이블 -->
+            <article class="card" id="comp__3">테이블</article>
+        </section>
+    </main>
+    <button id="toggle">다크모드</button>
     <script src="./scripts/main.js"></script>
 </body>
 </html>
