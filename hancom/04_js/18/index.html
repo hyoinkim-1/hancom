@@ -10,9 +10,9 @@
     <header id="header">
         <nav>
             <ul id="nav__container">
-                <li class="nav__item"><a href="#comp__1">1</a></li>
-                <li class="nav__item"><a href="#comp__2">2</a></li>
-                <li class="nav__item"><a href="#comp__3">3</a></li>
+                <li class="nav__item"><a href="#comp__1">투두</a></li>
+                <li class="nav__item"><a href="#comp__2">캐러셀</a></li>
+                <li class="nav__item"><a href="#comp__3">테이블</a></li>
             </ul>
         </nav>
     </header>
@@ -20,14 +20,19 @@
         <section class="container">
             <!-- 투두 -->
             <article class="card" id="comp__1">
-                <div id="todo">
-                    투두
-                </div>
+                <div class="card-title">투두</div>
+                <article class="todo">
+                    <form class="todo-form">
+                        <input class="todo-input" type="text" placeholder="todo 입력" autocomplete="off">
+                        <button class="todo-btn" type="submit">등록</button>
+                    </form>
+                    <ul class="todo-list"></ul>
+                </article>
             </article>
             <!-- 캐러셀 -->
             <article class="card" id="comp__2">
+                <div class="card-title">캐러셀</div>
                 <article class="carousel">
-                    캐러셀
                     <div class="carousel__viewport">
                         <ul class="carousel__track">
                             <li class="carousel__slide">
@@ -53,15 +58,18 @@
                             </li>
                         </ul>
                         <div class="carousel__btn-container">
-                            <button class="carousel__btn left">⬅️</button>
-                            <button class="carousel__btn right active">➡️</button>
-                            <button class="carousel__btn pause">⏸️</button>
+                            <button class="carousel__btn left"><</button>
+                            <button class="carousel__btn right active">></button>
+                            <button class="carousel__btn pause">⏸</button>
                         </div>
                     </div>
                 </article>
             </article>
             <!-- 테이블 -->
-            <article class="card" id="comp__3">테이블</article>
+            <article class="card" id="comp__3">
+                <div class="card-title">테이블</div>
+
+            </article>
         </section>
     </main>
     <button id="toggle">다크모드</button>

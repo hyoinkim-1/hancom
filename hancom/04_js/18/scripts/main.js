@@ -1,9 +1,22 @@
 
 // 다크모드
 
-// 카드컴포넌트 (드래그이벤트 : event, DOM 조작 연습)
+const toggle = document.querySelector("#toggle");
+if (localStorage.getItem("isDark") === "1") {
+    document.documentElement.classList.add("dark");
+}
+
+toggle.addEventListener("click", () => {
+    const nowDark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("isDark", nowDark ? "1" : "0");
+    toggle.textContent = nowDark ? "라이트모드" : "다크모드"
+});
+
 
 // 투두 (등록, 삭제 : localStorage 사용 및 DOM 조작 연습)
+
+const todo = [];
+
 
 // 캐러셀 (앞으로, 뒤로, 자동, 마우스호버이벤트 : event, transition 연습)
 
@@ -42,7 +55,7 @@ carousel__btnRight.addEventListener("click",()=>{
 const carousel__btnPlayPause = document.querySelector(".carousel__btn.pause");
 
 carousel__btnPlayPause.addEventListener("click", ()=>{
-    carousel__btnPlayPause.textContent = carousel__manualFlag? "▶️" : "⏸️";
+    carousel__btnPlayPause.textContent = carousel__manualFlag? "▶" : "⏸";
     carousel__manualFlag = !carousel__manualFlag;
 })
 
@@ -66,7 +79,7 @@ setInterval(() => {
         if (currentIndex === 0) {          // 0에서 뒤로: 애니메이션 전에 클론(6)으로 순간이동
           track.style.transition = 'none';
           track.style.transform = 'translateX(-600%)';
-          track.offsetHeight;              // ← 강제 리플로우: 위 상태를 먼저 확정시킴
+          track.offsetHeight;
           track.style.transition = 'transform 0.5s ease';
           currentIndex = 6;
         }
