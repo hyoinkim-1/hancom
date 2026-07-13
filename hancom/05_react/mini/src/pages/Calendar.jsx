@@ -7,7 +7,7 @@ import CalendarGrid from '../components/CalendarGrid'
 import PeriodNav from '../components/PeriodNav'
 
 export default function Calendar() {
-  const { expenses, removeExpense } = useExpenses()
+  const { expenses, removeExpense, updateExpense, isUpdatingExpense } = useExpenses()
   const [cursor, setCursor] = useState(new Date())
   const [selected, setSelected] = useState(new Date())
 
@@ -44,7 +44,12 @@ export default function Calendar() {
             (총 {selectedTotal.toLocaleString()}원)
           </span>
         </p>
-        <ExpenseList expenses={selectedExpenses} onRemove={removeExpense} />
+        <ExpenseList
+          expenses={selectedExpenses}
+          onRemove={removeExpense}
+          onUpdate={updateExpense}
+          isUpdating={isUpdatingExpense}
+        />
       </div>
     </main>
   )

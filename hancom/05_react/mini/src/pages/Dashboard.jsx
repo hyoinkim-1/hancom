@@ -34,14 +34,14 @@ export default function Dashboard() {
     <main className="mx-auto max-w-xl px-4 py-10">
       <h1 className="mb-6 text-2xl font-semibold tracking-tight">대시보드</h1>
 
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         <ModeToggle mode={mode} onChange={setMode} />
         <div className="ml-auto">
           <PeriodNav label={periodLabel} onPrev={() => shift(-1)} onNext={() => shift(1)} />
         </div>
       </div>
 
-      <div className="mb-6 grid grid-cols-3 gap-2">
+      <div className="mb-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
         <StatCard label="총 지출" value={`${total.toLocaleString()}원`} />
         <StatCard label="건수" value={`${count}건`} />
         <StatCard label="건당 평균" value={`${average.toLocaleString()}원`} />

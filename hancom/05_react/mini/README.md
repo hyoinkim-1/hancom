@@ -1,16 +1,49 @@
-# React + Vite
+# 간단 가계부
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 학습용 미니프로젝트. 지출을 기록하고 대시보드/캘린더로 확인하는 가계부 앱.
 
-Currently, two official plugins are available:
+## 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- 지출 추가/수정/삭제, 카테고리별 분류
+- 대시보드: 일별/월별 통계, 카테고리 비중
+- 캘린더: 날짜별 지출 내역
+- 이름 기반 사용자 구분 (로그인 없이 이름만 입력)
+- 다크모드
+- 반응형 레이아웃 (모바일에서 폼/통계 카드가 세로로 쌓임)
+- TanStack Query + Suspense + ErrorBoundary, 토스트 알림
+- 백엔드 `${method} ${url} ${statutsCode}` 형태의 로깅 기능
 
-## React Compiler
+## 스택
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 프론트: React, React Router, Tailwind CSS, TanStack Query
+- 백엔드: Express, MongoDB
 
-## Expanding the ESLint configuration
+## 실행
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev          # 프론트 (localhost:5173)
+```
+
+백엔드는 `server/` 폴더에서:
+
+```bash
+cd server
+npm install
+```
+
+`server/.env` 파일에 MongoDB 연결 정보 추가:
+
+```
+MONGODB_URI=mongodb+srv://...
+```
+
+```bash
+npm run dev          # .env 읽어서 실행 (localhost:4000)
+```
+
+프론트가 다른 백엔드 주소를 쓰게 하려면 프로젝트 루트에 `.env` 만들고:
+
+```
+VITE_API_URL=http://localhost:4000
+```
