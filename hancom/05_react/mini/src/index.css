@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --color-bg: #f7f6f3;
+  --color-surface: #ffffff;
+  --color-text: #111111;
+  --color-text-muted: #787774;
+  --color-primary: #111111;
+  --color-primary-hover: #333333;
+  --color-border: #eaeaea;
+  --radius: 12px;
+  --spacing: 12px;
+
+  --cat-food-bg: #fdebec;
+  --cat-food-text: #9f2f2d;
+  --cat-transport-bg: #e1f3fe;
+  --cat-transport-text: #1f6c9f;
+  --cat-etc-bg: #edf3ec;
+  --cat-etc-text: #346538;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #171715;
+  --color-surface: #211f1c;
+  --color-text: #f2f1ee;
+  --color-text-muted: #9a978f;
+  --color-primary: #f2f1ee;
+  --color-primary-hover: #d8d6d1;
+  --color-border: #35322d;
+
+  --cat-food-bg: #3a2321;
+  --cat-food-text: #f2b3ad;
+  --cat-transport-bg: #1c2e38;
+  --cat-transport-text: #9bd4f2;
+  --cat-etc-bg: #23281f;
+  --cat-etc-text: #b7d1a8;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
