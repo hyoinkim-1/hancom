@@ -4,8 +4,8 @@ import { useUser } from './useUser'
 import { useToast } from './useToast'
 
 // 로컬 개발은 localhost:4000, 배포 시에는 Netlify 환경변수 VITE_API_URL에 Render 서버 주소를 넣는다
-// const API_URL = `${import.meta.env.VITE_API_URL ?? 'http://localhost:4000'}/api/expenses`
-const API_URL = `${'http://localhost:4000'}/api/expenses`
+const API_URL = `${import.meta.env.VITE_API_URL ?? 'http://localhost:4000'}/api/expenses`
+// const API_URL = `${'http://localhost:4000'}/api/expenses`
 
 async function fetchExpenses(name) {
   if (!name) return []
