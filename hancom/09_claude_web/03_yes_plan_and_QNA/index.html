@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공학용 계산기</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --card-2: #1a1a26;
+    --text: #e6e6ee;
+    --muted: #8a8aa0;
+    --accent: #39ff14;
+    --accent-dim: #2ecc0f;
+    --op: #1f1f2e;
+    --danger: #ff4d4d;
+    --glow: 0 0 8px rgba(57,255,20,.55), 0 0 20px rgba(57,255,20,.25);
+    --shadow: 0 20px 60px rgba(0,0,0,.6);
+    --radius: 16px;
+  }
+  [data-theme="light"] {
+    --bg: #eef1f4;
+    --card: #ffffff;
+    --card-2: #f2f4f7;
+    --text: #1a1d24;
+    --muted: #6b7280;
+    --accent: #2ecc0f;
+    --accent-dim: #249a0c;
+    --op: #e6eaef;
+    --danger: #d92626;
+    --glow: 0 0 6px rgba(46,204,15,.35);
+    --shadow: 0 16px 40px rgba(0,0,0,.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(1200px 600px at 50% -10%, rgba(57,255,20,.08), transparent 60%), var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    padding: 16px;
+    transition: background .3s, color .3s;
+  }
+
+  .calc {
+    width: 100%;
+    max-width: 420px;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .title { font-size: 14px; color: var(--muted); letter-spacing: .5px; }
+  .toggles { display: flex; gap: 8px; }
+  .chip {
+    background: var(--op);
+    color: var(--text);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: .15s;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--accent); }
+  .chip.active { color: var(--accent); border-color: var(--accent); box-shadow: var(--glow); }
+
+  .display {
+    background: var(--card-2);
+    border-radius: 12px;
+    padding: 16px 18px;
+    text-align: right;
+    margin-bottom: 16px;
+    min-height: 96px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+  .expr {
+    color: var(--muted);
+    font-size: 16px;
+    min-height: 22px;
+    word-break: break-all;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  .result {
+    color: var(--accent);
+    font-size: 40px;
+    font-weight: 600;
+    text-shadow: var(--glow);
+    word-break: break-all;
+    line-height: 1.1;
+    margin-top: 6px;
+  }
+  .result.error { color: var(--danger); text-shadow: none; font-size: 30px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  button.key {
+    border: 1px solid rgba(255,255,255,.05);
+    background: var(--op);
+    color: var(--text);
+    font-size: 18px;
+    padding: 0;
+    height: 52px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform .05s, box-shadow .15s, background .15s;
+    user-select: none;
+  }
+  button.key:hover { background: var(--card-2); }
+  button.key:active, button.key.pressed { transform: scale(.94); }
+  .key.fn { font-size: 15px; color: var(--muted); }
+  .key.op { color: var(--accent); }
+  .key.eq { background: var(--accent); color: #06120a; font-weight: 700; box-shadow: var(--glow); }
+  .key.eq:hover { background: var(--accent-dim); }
+  .key.clear { color: var(--danger); }
+
+  @media (max-width: 480px) {
+    .calc { padding: 14px; }
+    .result { font-size: 32px; }
+    button.key { height: 48px; font-size: 16px; }
+    .grid { gap: 6px; }
+  }
+</style>
+</head>
+<body>
+  <div class="calc">
+    <div class="topbar">
+      <span class="title">공학용 계산기</span>
+      <div class="toggles">
+        <span class="chip active" id="angleToggle" title="각도 단위">DEG</span>
+        <span class="chip" id="themeToggle" title="테마 전환">◐</span>
+      </div>
+    </div>
+
+    <div class="display">
+      <div class="expr" id="expr">&nbsp;</div>
+      <div class="result" id="result">0</div>
+    </div>
+
+    <div class="grid" id="keys">
+      <!-- 공학 함수 행 -->
+      <button class="key fn" data-ins="sin(">sin</button>
+      <button class="key fn" data-ins="cos(">cos</button>
+      <button class="key fn" data-ins="tan(">tan</button>
+      <button class="key fn" data-ins="(">(</button>
+      <button class="key fn" data-ins=")">)</button>
+
+      <button class="key fn" data-ins="log(">log</button>
+      <button class="key fn" data-ins="ln(">ln</button>
+      <button class="key fn" data-ins="sqrt(">√</button>
+      <button class="key fn" data-ins="^2">x²</button>
+      <button class="key fn" data-ins="^">xʸ</button>
+
+      <button class="key fn" data-ins="pi">π</button>
+      <button class="key fn" data-ins="e">e</button>
+      <button class="key clear" data-action="clear">C</button>
+      <button class="key clear" data-action="back">⌫</button>
+      <button class="key op" data-ins="/">÷</button>
+
+      <button class="key" data-ins="7">7</button>
+      <button class="key" data-ins="8">8</button>
+      <button class="key" data-ins="9">9</button>
+      <button class="key fn" data-action="percent">%</button>
+      <button class="key op" data-ins="*">×</button>
+
+      <button class="key" data-ins="4">4</button>
+      <button class="key" data-ins="5">5</button>
+      <button class="key" data-ins="6">6</button>
+      <button class="key fn" data-action="negate">±</button>
+      <button class="key op" data-ins="-">−</button>
+
+      <button class="key" data-ins="1">1</button>
+      <button class="key" data-ins="2">2</button>
+      <button class="key" data-ins="3">3</button>
+      <button class="key" data-ins="0">0</button>
+      <button class="key op" data-ins="+">+</button>
+
+      <button class="key" data-ins="." style="grid-column: span 2;">.</button>
+      <button class="key eq" data-action="equals" style="grid-column: span 3;">=</button>
+    </div>
+  </div>
+
+<script>
+"use strict";
+
+/* ---------- 상태 ---------- */
+let expr = "";            // 사용자가 쌓는 표현식 (표시용 기호는 삽입 시 정규화)
+let angleMode = "DEG";    // DEG | RAD
+let justEvaluated = false;
+
+const exprEl = document.getElementById("expr");
+const resultEl = document.getElementById("result");
+const keysEl = document.getElementById("keys");
+
+/* ---------- 안전 평가: shunting-yard ---------- */
+// eval/Function 미사용. 화이트리스트 토큰만 파싱 → 임의 JS 실행 차단(보안 경계).
+const FUNCS = {
+  sin: x => Math.sin(toRad(x)),
+  cos: x => Math.cos(toRad(x)),
+  tan: x => Math.tan(toRad(x)),
+  log: x => Math.log10(x),
+  ln:  x => Math.log(x),
+  sqrt: x => { if (x < 0) throw new Error("범위"); return Math.sqrt(x); },
+};
+const CONSTS = { pi: Math.PI, e: Math.E };
+// 우선순위와 결합성. ^ 는 우결합.
+const OPS = {
+  "+": { p: 2, assoc: "L", fn: (a, b) => a + b },
+  "-": { p: 2, assoc: "L", fn: (a, b) => a - b },
+  "*": { p: 3, assoc: "L", fn: (a, b) => a * b },
+  "/": { p: 3, assoc: "L", fn: (a, b) => { if (b === 0) throw new Error("0으로 나눔"); return a / b; } },
+  "^": { p: 4, assoc: "R", fn: (a, b) => Math.pow(a, b) },
+  "u-": { p: 5, assoc: "R", unary: true, fn: a => -a }, // 단항 마이너스
+};
+
+function toRad(x) { return angleMode === "DEG" ? x * Math.PI / 180 : x; }
+
+function tokenize(s) {
+  const tokens = [];
+  let i = 0;
+  const isDigit = c => c >= "0" && c <= "9";
+  const isAlpha = c => (c >= "a" && c <= "z");
+  while (i < s.length) {
+    const c = s[i];
+    if (c === " ") { i++; continue; }
+    if (isDigit(c) || c === ".") {
+      let num = "";
+      while (i < s.length && (isDigit(s[i]) || s[i] === ".")) num += s[i++];
+      if ((num.match(/\./g) || []).length > 1) throw new Error("문법");
+      tokens.push({ t: "num", v: parseFloat(num) });
+      continue;
+    }
+    if (isAlpha(c)) {
+      let name = "";
+      while (i < s.length && isAlpha(s[i])) name += s[i++];
+      if (name in FUNCS) tokens.push({ t: "func", v: name });
+      else if (name in CONSTS) tokens.push({ t: "num", v: CONSTS[name] });
+      else throw new Error("알 수 없음: " + name);
+      continue;
+    }
+    if (c === "(" || c === ")") { tokens.push({ t: c }); i++; continue; }
+    if ("+-*/^".includes(c)) { tokens.push({ t: "op", v: c }); i++; continue; }
+    throw new Error("허용되지 않은 문자: " + c);
+  }
+  return tokens;
+}
+
+function toRPN(tokens) {
+  const out = [], stack = [];
+  let prev = null; // 단항 마이너스 판별용
+  for (const tk of tokens) {
+    if (tk.t === "num") { out.push(tk); }
+    else if (tk.t === "func") { stack.push(tk); }
+    else if (tk.t === "op") {
+      let opName = tk.v;
+      // 단항 마이너스: 식 시작 / 여는 괄호 / 다른 연산자 뒤의 '-'
+      const unary = tk.v === "-" && (prev === null || prev.t === "op" || prev.t === "(" || prev.t === "func");
+      if (unary) opName = "u-";
+      const o1 = OPS[opName];
+      while (stack.length) {
+        const top = stack[stack.length - 1];
+        if (top.t === "func") { out.push(stack.pop()); continue; }
+        if (top.t === "op") {
+          const o2 = OPS[top.v === "u-" ? "u-" : top.v];
+          if ((o1.assoc === "L" && o1.p <= o2.p) || (o1.assoc === "R" && o1.p < o2.p)) {
+            out.push(stack.pop()); continue;
+          }
+        }
+        break;
+      }
+      stack.push({ t: "op", v: opName });
+    }
+    else if (tk.t === "(") { stack.push(tk); }
+    else if (tk.t === ")") {
+      while (stack.length && stack[stack.length - 1].t !== "(") out.push(stack.pop());
+      if (!stack.length) throw new Error("괄호 불일치");
+      stack.pop(); // '(' 제거
+      if (stack.length && stack[stack.length - 1].t === "func") out.push(stack.pop());
+    }
+    prev = tk.t === "op" ? { t: "op" } : tk;
+  }
+  while (stack.length) {
+    const top = stack.pop();
+    if (top.t === "(") throw new Error("괄호 불일치");
+    out.push(top);
+  }
+  return out;
+}
+
+function evalRPN(rpn) {
+  const st = [];
+  for (const tk of rpn) {
+    if (tk.t === "num") st.push(tk.v);
+    else if (tk.t === "func") {
+      if (!st.length) throw new Error("문법");
+      st.push(FUNCS[tk.v](st.pop()));
+    }
+    else if (tk.t === "op") {
+      const op = OPS[tk.v];
+      if (op.unary) {
+        if (!st.length) throw new Error("문법");
+        st.push(op.fn(st.pop()));
+      } else {
+        if (st.length < 2) throw new Error("문법");
+        const b = st.pop(), a = st.pop();
+        st.push(op.fn(a, b));
+      }
+    }
+  }
+  if (st.length !== 1) throw new Error("문법");
+  return st[0];
+}
+
+function calculate(s) {
+  const val = evalRPN(toRPN(tokenize(s)));
+  if (!isFinite(val)) throw new Error("정의되지 않음");
+  return val;
+}
+
+/* ---------- 표시 ---------- */
+// 내부 표현식(*, /)을 화면 기호로 변환
+function pretty(s) {
+  return s.replace(/\*/g, "×").replace(/\//g, "÷").replace(/-/g, "−")
+          .replace(/pi/g, "π").replace(/sqrt\(/g, "√(");
+}
+function render() {
+  exprEl.textContent = expr === "" ? " " : pretty(expr);
+  exprEl.scrollLeft = exprEl.scrollWidth;
+}
+
+function insert(str) {
+  if (justEvaluated) {
+    // 결과 뒤 숫자/함수/여는괄호 입력 → 새 계산 시작. 연산자면 이어서.
+    if (/[0-9.a-z(]/.test(str[0]) && !"^".includes(str[0])) expr = "";
+    justEvaluated = false;
+  }
+  expr += str;
+  render();
+}
+
+function equals() {
+  if (expr.trim() === "") return;
+  try {
+    const val = calculate(expr);
+    const shown = formatNum(val);
+    resultEl.classList.remove("error");
+    resultEl.textContent = shown;
+    expr = String(val);          // 이어서 계산 가능하도록 원값 유지
+    justEvaluated = true;
+    render();
+  } catch (err) {
+    resultEl.classList.add("error");
+    resultEl.textContent = "Error";
+    justEvaluated = true;        // 다음 숫자 입력 시 초기화
+  }
+}
+
+function formatNum(v) {
+  if (Number.isInteger(v)) return String(v);
+  // 부동소수 노이즈 정리 (0.30000000004 → 0.3)
+  return parseFloat(v.toPrecision(12)).toString();
+}
+
+/* ---------- 액션 ---------- */
+function doAction(action) {
+  switch (action) {
+    case "clear": expr = ""; resultEl.classList.remove("error"); resultEl.textContent = "0"; justEvaluated = false; render(); break;
+    case "back":
+      if (justEvaluated) { justEvaluated = false; break; }
+      expr = expr.slice(0, -1); render(); break;
+    case "equals": equals(); break;
+    case "negate": expr = "-(" + expr + ")"; justEvaluated = false; render(); break;
+    case "percent": expr = "(" + expr + ")/100"; justEvaluated = false; render(); break;
+  }
+}
+
+/* ---------- 이벤트 ---------- */
+keysEl.addEventListener("click", e => {
+  const btn = e.target.closest("button.key");
+  if (!btn) return;
+  if (btn.dataset.action) doAction(btn.dataset.action);
+  else if (btn.dataset.ins != null) insert(btn.dataset.ins);
+});
+
+// 각도 토글
+document.getElementById("angleToggle").addEventListener("click", function () {
+  angleMode = angleMode === "DEG" ? "RAD" : "DEG";
+  this.textContent = angleMode;
+});
+
+// 테마 토글
+const themeToggle = document.getElementById("themeToggle");
+function applyTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  try { localStorage.setItem("calc-theme", t); } catch (_) {}
+}
+themeToggle.addEventListener("click", () => {
+  const cur = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  applyTheme(cur === "light" ? "dark" : "light");
+});
+try {
+  const saved = localStorage.getItem("calc-theme");
+  applyTheme(saved === "light" ? "light" : "dark");
+} catch (_) { applyTheme("dark"); }
+
+// 키보드 입력
+const KEYMAP = {
+  "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9",
+  ".":".","+":"+","-":"-","*":"*","/":"/","^":"^","(":"(",")":")",
+};
+window.addEventListener("keydown", e => {
+  const k = e.key;
+  let handledSel = null;
+  if (k in KEYMAP) { insert(KEYMAP[k]); handledSel = `[data-ins="${cssEsc(KEYMAP[k])}"]`; }
+  else if (k === "Enter" || k === "=") { e.preventDefault(); doAction("equals"); handledSel = '[data-action="equals"]'; }
+  else if (k === "Backspace") { doAction("back"); handledSel = '[data-action="back"]'; }
+  else if (k === "Escape") { doAction("clear"); handledSel = '[data-action="clear"]'; }
+  else if (k === "%") { doAction("percent"); handledSel = '[data-action="percent"]'; }
+  else return;
+  flash(handledSel);
+});
+function cssEsc(s) { return s.replace(/([()*+.\/^-])/g, "\\$1"); }
+function flash(sel) {
+  if (!sel) return;
+  const btn = keysEl.querySelector(sel);
+  if (!btn) return;
+  btn.classList.add("pressed");
+  setTimeout(() => btn.classList.remove("pressed"), 100);
+}
+
+render();
+
+/* ---------- 자체 점검 (콘솔) ---------- */
+(function selfTest() {
+  const approx = (a, b) => Math.abs(a - b) < 1e-9;
+  const cases = [
+    ["2+3*4", 14],
+    ["(2+3)*4", 20],
+    ["2^10", 1024],
+    ["-3+5", 2],
+    ["sqrt(16)", 4],
+    ["log(100)", 2],
+    ["ln(e)", 1],
+  ];
+  let ok = true;
+  for (const [s, want] of cases) {
+    try { if (!approx(calculate(s), want)) { ok = false; console.error("FAIL", s, "→", calculate(s), "want", want); } }
+    catch (err) { ok = false; console.error("THROW", s, err.message); }
+  }
+  // DEG 삼각함수
+  angleMode = "DEG";
+  if (!approx(calculate("sin(30)"), 0.5)) { ok = false; console.error("FAIL sin(30) DEG"); }
+  // 0으로 나눔은 예외여야 함
+  try { calculate("5/0"); ok = false; console.error("FAIL 5/0 예외 안남"); } catch (_) {}
+  // 임의 문자 차단
+  try { calculate("alert(1)"); ok = false; console.error("FAIL 임의문자 통과"); } catch (_) {}
+  console.log(ok ? "✅ selfTest 통과" : "❌ selfTest 실패");
+})();
+</script>
+</body>
+</html>

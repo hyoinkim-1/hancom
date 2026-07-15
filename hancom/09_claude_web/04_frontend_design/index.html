@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HANCOM SL-260 계산기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lcd:#A3B394;
+    --lcd-ink:#1B241A;
+    --lcd-ghost:rgba(27,36,26,.10);
+    --body:#24232A;
+    --key:#E4E1D6;
+    --op:#E08A3C;
+    --ac:#C6553D;
+    --page:#D9D6CC;
+    --label:#B7B4AC;
+    --cond:"Saira Semi Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #E3E0D6 0%, var(--page) 55%, #C7C4B9 100%);
+    color:#2b2a27;
+    font-family:var(--cond);
+    display:grid;
+    place-items:center;
+    padding:32px 18px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    display:flex;
+    align-items:stretch;
+    gap:22px;
+    width:100%;
+    max-width:660px;
+    animation:settle .5s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes settle{from{opacity:0;transform:translateY(10px) scale(.99);}to{opacity:1;transform:none;}}
+
+  /* ---------- calculator body ---------- */
+  .calc{
+    flex:0 0 360px;
+    max-width:360px;
+    background:linear-gradient(180deg,#33323A 0%, var(--body) 40%, #1c1b21 100%);
+    border-radius:30px;
+    padding:22px 20px 24px;
+    box-shadow:
+      0 26px 50px -20px rgba(20,20,25,.65),
+      0 2px 0 rgba(255,255,255,.06) inset,
+      0 -3px 12px rgba(0,0,0,.4) inset;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:2px 4px 16px;
+    color:var(--label);
+    text-transform:uppercase;
+  }
+  .brand .mark{font-weight:700;letter-spacing:.22em;font-size:15px;}
+  .brand .right{display:flex;align-items:center;gap:10px;}
+  .brand .model{
+    font-weight:600;font-size:11px;letter-spacing:.14em;
+    padding:2px 8px;border:1px solid rgba(255,255,255,.16);border-radius:20px;
+  }
+  .solar{
+    width:46px;height:16px;border-radius:3px;
+    background:
+      repeating-linear-gradient(90deg,#3a4a63 0 6px,#2b3852 6px 8px);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 1px 2px rgba(0,0,0,.4) inset;
+  }
+
+  /* ---------- LCD ---------- */
+  .lcd{
+    background:linear-gradient(180deg,#9EAF8E 0%, var(--lcd) 50%, #97A987 100%);
+    border-radius:12px;
+    padding:12px 16px 14px;
+    margin-bottom:20px;
+    box-shadow:
+      0 2px 0 rgba(255,255,255,.14),
+      0 3px 10px rgba(0,0,0,.45) inset,
+      0 -2px 6px rgba(255,255,255,.12) inset;
+    border:1px solid rgba(27,36,26,.25);
+    overflow:hidden;
+  }
+  .lcd-annun{
+    display:flex;justify-content:flex-end;gap:12px;
+    height:15px;
+    font-size:13px;font-weight:700;line-height:1;
+    color:var(--lcd-ghost);
+    letter-spacing:.05em;
+  }
+  .lcd-annun span.on{color:var(--lcd-ink);}
+  .lcd-annun .ann-e{margin-left:2px;}
+  .lcd-expr{
+    text-align:right;
+    font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+    font-size:13px;
+    line-height:1.5;
+    min-height:20px;
+    color:rgba(27,36,26,.62);
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .seg-row{
+    display:flex;
+    justify-content:flex-end;
+    align-items:flex-end;
+    gap:2px;
+    margin-top:4px;
+  }
+  .digit{
+    flex:0 1 30px;
+    width:30px;
+    height:auto;
+    display:block;
+  }
+  .seg{fill:var(--lcd-ghost);transition:fill .09s ease;}
+  .seg.on{fill:var(--lcd-ink);}
+  .dp{fill:var(--lcd-ghost);transition:fill .09s ease;}
+  .dp.on{fill:var(--lcd-ink);}
+  .mark{fill:transparent;transition:fill .09s ease;}
+  .mark.on{fill:var(--lcd-ink);}
+
+  /* ---------- keys ---------- */
+  .keys{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:11px;
+  }
+  .key{
+    height:58px;
+    border:none;
+    border-radius:15px;
+    font-family:var(--cond);
+    font-size:22px;
+    font-weight:600;
+    color:#2a2a28;
+    background:linear-gradient(180deg,#F1EEE5,var(--key));
+    box-shadow:0 4px 0 #b4b0a4, 0 5px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.7);
+    cursor:pointer;
+    transition:transform .05s ease, box-shadow .05s ease, filter .1s ease;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+  }
+  .key .sub{display:block;font-size:11px;font-weight:600;color:#8a8a86;letter-spacing:.02em;margin-top:-2px;}
+  .key.op{
+    color:#3a2410;
+    background:linear-gradient(180deg,#F0A45E,var(--op));
+    box-shadow:0 4px 0 #a85f22, 0 5px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.5);
+    font-size:26px;
+  }
+  .key.eq{
+    color:#3a2410;
+    background:linear-gradient(180deg,#EE9A45,#D77C22);
+    box-shadow:0 4px 0 #9a5417, 0 5px 8px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.45);
+    font-size:28px;
+  }
+  .key.ac{
+    color:#fff;
+    background:linear-gradient(180deg,#D46A52,var(--ac));
+    box-shadow:0 4px 0 #953a29, 0 5px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .key.zero{grid-column:span 2;}
+  .key:hover{filter:brightness(1.03);}
+  .key:active,.key.press{
+    transform:translateY(4px);
+    box-shadow:0 0 0 #b4b0a4, 0 1px 3px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  .key:focus-visible{outline:3px solid #3b5bdb;outline-offset:3px;}
+
+  /* ---------- history ---------- */
+  .history{
+    flex:1 1 0;
+    min-width:0;
+    background:#EDEAE0;
+    border-radius:22px;
+    padding:20px 18px;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 20px 40px -24px rgba(20,20,25,.5), inset 0 1px 0 rgba(255,255,255,.7);
+  }
+  .history h2{
+    margin:0 0 14px;
+    font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+    color:#8f8b80;
+  }
+  .hist-list{
+    list-style:none;margin:0;padding:0;
+    overflow-y:auto;
+    flex:1;
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .hist-list li{border-bottom:1px solid #E0DCD0;}
+  .hist-btn{
+    width:100%;
+    text-align:right;
+    background:none;border:none;cursor:pointer;
+    padding:9px 6px;
+    border-radius:8px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    display:block;
+  }
+  .hist-btn:hover{background:#E3DFD3;}
+  .hist-btn:focus-visible{outline:2px solid #3b5bdb;outline-offset:1px;}
+  .hist-btn .h-expr{display:block;font-size:12px;color:#9a968b;}
+  .hist-btn .h-res{display:block;font-size:17px;color:#2f2e29;font-weight:600;margin-top:1px;}
+  .hist-empty{
+    margin:auto 0;
+    text-align:center;
+    color:#a8a498;
+    font-size:14px;
+    line-height:1.6;
+    padding:0 8px;
+  }
+
+  @media (max-width:680px){
+    .wrap{flex-direction:column;align-items:center;max-width:360px;}
+    .calc{flex-basis:auto;width:100%;}
+    .history{width:100%;max-height:210px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="calc" role="application" aria-label="계산기">
+      <div class="brand">
+        <span class="mark">Hancom</span>
+        <span class="right">
+          <span class="model">SL-260</span>
+          <span class="solar" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <div class="lcd">
+        <div class="lcd-annun" aria-hidden="true">
+          <span data-ann="÷">÷</span><span data-ann="×">×</span><span data-ann="−">−</span><span data-ann="+">+</span><span class="ann-e" data-ann="E">E</span>
+        </div>
+        <div class="lcd-expr" id="expr" aria-hidden="true"></div>
+        <div class="seg-row" id="segRow" aria-hidden="true"></div>
+        <div id="srValue" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">0</div>
+      </div>
+
+      <div class="keys" id="keys">
+        <button class="key ac" data-action="clear" data-k="Escape" aria-label="전체 지우기">AC</button>
+        <button class="key" data-action="pm" aria-label="부호 바꾸기">±</button>
+        <button class="key" data-action="pct" data-k="%" aria-label="퍼센트">%</button>
+        <button class="key op" data-action="op" data-op="/" data-sym="÷" data-k="/" aria-label="나누기">÷</button>
+
+        <button class="key" data-digit="7" data-k="7">7</button>
+        <button class="key" data-digit="8" data-k="8">8</button>
+        <button class="key" data-digit="9" data-k="9">9</button>
+        <button class="key op" data-action="op" data-op="*" data-sym="×" data-k="*" aria-label="곱하기">×</button>
+
+        <button class="key" data-digit="4" data-k="4">4</button>
+        <button class="key" data-digit="5" data-k="5">5</button>
+        <button class="key" data-digit="6" data-k="6">6</button>
+        <button class="key op" data-action="op" data-op="-" data-sym="−" data-k="-" aria-label="빼기">−</button>
+
+        <button class="key" data-digit="1" data-k="1">1</button>
+        <button class="key" data-digit="2" data-k="2">2</button>
+        <button class="key" data-digit="3" data-k="3">3</button>
+        <button class="key op" data-action="op" data-op="+" data-sym="+" data-k="+" aria-label="더하기">＋</button>
+
+        <button class="key zero" data-digit="0" data-k="0">0</button>
+        <button class="key" data-action="dot" data-k="." aria-label="소수점">.</button>
+        <button class="key eq" data-action="eq" data-k="Enter" aria-label="계산">=</button>
+      </div>
+    </main>
+
+    <aside class="history" aria-label="계산 기록">
+      <h2>기록</h2>
+      <ol class="hist-list" id="histList"></ol>
+      <p class="hist-empty" id="histEmpty">아직 계산 기록이 없어요.<br>숫자를 눌러 시작하세요.</p>
+    </aside>
+  </div>
+
+<script>
+"use strict";
+/* ========== seven-segment geometry ========== */
+const H = 6; // half-thickness
+const hHex = (x1,x2,cy)=>`${x1},${cy} ${x1+H},${cy-H} ${x2-H},${cy-H} ${x2},${cy} ${x2-H},${cy+H} ${x1+H},${cy+H}`;
+const vHex = (cx,y1,y2)=>`${cx},${y1} ${cx+H},${y1+H} ${cx+H},${y2-H} ${cx},${y2} ${cx-H},${y2-H} ${cx-H},${y1+H}`;
+const SEGPTS = {
+  a:hHex(14,66,8),  f:vHex(10,14,70), b:vHex(70,14,70),
+  g:hHex(14,66,74), e:vHex(10,78,140), c:vHex(70,78,140),
+  d:hHex(14,66,146)
+};
+// which segments are lit for each glyph
+const GLYPH = {
+  '0':'abcdef','1':'bc','2':'abged','3':'abgcd','4':'fgbc',
+  '5':'afgcd','6':'afgedc','7':'abc','8':'abcdefg','9':'abcfgd',
+  '-':'g','E':'afged',' ':''
+};
+
+const MAX_SLOTS = 10;
+const segRow = document.getElementById('segRow');
+const slots = [];
+for(let i=0;i<MAX_SLOTS;i++){
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 84 154');
+  svg.setAttribute('class','digit');
+  const seg = {};
+  for(const k of 'abcdefg'){
+    const p = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    p.setAttribute('points',SEGPTS[k]);
+    p.setAttribute('class','seg '+k);
+    svg.appendChild(p); seg[k]=p;
+  }
+  const dp = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dp.setAttribute('cx','79'); dp.setAttribute('cy','146'); dp.setAttribute('r','6');
+  dp.setAttribute('class','dp'); svg.appendChild(dp);
+  const mark = document.createElementNS('http://www.w3.org/2000/svg','path');
+  mark.setAttribute('d','M74,140 q9,3 3,22 q0,-10 -3,-22 z');
+  mark.setAttribute('class','mark'); svg.appendChild(mark);
+  segRow.appendChild(svg);
+  slots.push({seg,dp,mark});
+}
+function setGlyph(i,ch){
+  const on = GLYPH[ch] || '';
+  for(const k of 'abcdefg') slots[i].seg[k].classList.toggle('on', on.includes(k));
+}
+function paint(str){ // str: sign/commas/dot/digits, right-aligned into slots
+  for(let i=0;i<MAX_SLOTS;i++){ setGlyph(i,' '); slots[i].dp.classList.remove('on'); slots[i].mark.classList.remove('on'); }
+  let idx = MAX_SLOTS-1, dpPending=false, commaPending=false;
+  for(let p=str.length-1;p>=0;p--){
+    const c=str[p];
+    if(c==='.'){ dpPending=true; continue; }
+    if(c===','){ commaPending=true; continue; }
+    if(idx<0) break;
+    setGlyph(idx,c);
+    if(dpPending){ slots[idx].dp.classList.add('on'); dpPending=false; }
+    if(commaPending){ slots[idx].mark.classList.add('on'); commaPending=false; }
+    idx--;
+  }
+}
+
+/* ========== number helpers (pure) ========== */
+const cleanNum = r => Number(r.toPrecision(12));           // kills 0.1+0.2 float dust
+const NF = new Intl.NumberFormat('en-US',{maximumFractionDigits:8});
+const fmtPlain = n => isFinite(n) ? NF.format(n) : '오류';
+
+function compute(a,op,b){
+  let r;
+  switch(op){ case'+':r=a+b;break; case'-':r=a-b;break; case'*':r=a*b;break; case'/':r=a/b;break; }
+  return cleanNum(r);
+}
+// number -> clean plain-decimal string within display capacity, or null if it doesn't fit
+function toDisplayStr(n){
+  if(!isFinite(n)) return null;
+  const neg = n<0; let abs=Math.abs(n);
+  const cap = neg?9:10;
+  const intDigits = abs<1 ? 1 : Math.floor(Math.log10(abs))+1;
+  if(intDigits>cap) return null;
+  const dec = Math.max(0, cap-intDigits);
+  let s = abs.toFixed(Math.min(dec,8));
+  if(s.includes('.')) s=s.replace(/0+$/,'').replace(/\.$/,'');
+  if(s.split('.')[0].length>cap) return null;   // rounding pushed it over (e.g. 9.99→10)
+  return (neg?'-':'')+s;
+}
+// entry string -> seven-seg display string (adds commas, keeps trailing dot while typing)
+function fmtSegStr(entry){
+  if(entry===''||entry==='-') entry='0';
+  const neg = entry[0]==='-';
+  let body = neg?entry.slice(1):entry;
+  const dot = body.includes('.');
+  let ip, fp='';
+  if(dot){ [ip,fp]=body.split('.'); } else { ip=body; }
+  if(ip==='') ip='0';
+  ip = ip.replace(/^0+(?=\d)/,'');
+  if(ip==='') ip='0';
+  ip = ip.replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  return (neg?'-':'') + ip + (dot?'.'+fp:'');
+}
+function percentValue(acc,op,val){
+  return cleanNum((op!==null && acc!==null) ? acc*(val/100) : val/100);
+}
+function toggleSign(entry){
+  if(entry==='0'||entry==='') return entry;
+  return entry[0]==='-' ? entry.slice(1) : '-'+entry;
+}
+function digitCount(entry){ return entry.replace(/[-.]/g,'').length; }
+
+/* ========== engine (state machine) ========== */
+const S = { entry:'0', acc:null, op:null, sym:'', overwrite:true, error:false, exprText:'' };
+const history = [];
+
+function resetAll(){ Object.assign(S,{entry:'0',acc:null,op:null,sym:'',overwrite:true,error:false,exprText:''}); }
+function setError(msg){ S.error=true; S.exprText=msg; }
+
+function inputDigit(d){
+  if(S.error) resetAll();
+  if(S.overwrite){ S.entry=d; S.overwrite=false; }
+  else if(S.entry==='0'){ S.entry=d; }
+  else{
+    const cap = S.entry[0]==='-'?9:10;
+    if(digitCount(S.entry)<cap) S.entry+=d;
+  }
+  render();
+}
+function inputDot(){
+  if(S.error) resetAll();
+  if(S.overwrite){ S.entry='0.'; S.overwrite=false; }
+  else if(!S.entry.includes('.')) S.entry+='.';
+  render();
+}
+function inputOp(op,sym){
+  if(S.error) return;
+  if(S.op!==null && !S.overwrite){
+    const r = compute(S.acc,S.op,Number(S.entry));
+    if(toDisplayStr(r)===null){ setError(isFinite(r)?'자릿수 초과':'0으로 나눌 수 없어요'); render(); return; }
+    S.acc=r; S.entry=toDisplayStr(r);
+  } else if(S.acc===null){
+    S.acc=Number(S.entry);
+  }
+  S.op=op; S.sym=sym; S.overwrite=true;
+  S.exprText = fmtPlain(S.acc)+' '+sym;
+  render();
+}
+function inputEquals(){
+  if(S.error || S.op===null) return;
+  const a=S.acc, b=Number(S.entry), op=S.op, sym=S.sym;
+  const r=compute(a,op,b);
+  const exprFull = `${fmtPlain(a)} ${sym} ${fmtPlain(b)} =`;
+  if(toDisplayStr(r)===null){ setError(isFinite(r)?'자릿수 초과':'0으로 나눌 수 없어요'); render(); return; }
+  history.unshift({expr:`${fmtPlain(a)} ${sym} ${fmtPlain(b)}`, result:r});
+  renderHistory();
+  S.entry=toDisplayStr(r); S.acc=null; S.op=null; S.sym=''; S.overwrite=true;
+  S.exprText=exprFull;
+  render();
+}
+function inputPercent(){
+  if(S.error) return;
+  const r = percentValue(S.acc,S.op,Number(S.entry));
+  const ds = toDisplayStr(r);
+  if(ds===null){ setError('자릿수 초과'); render(); return; }
+  S.entry=ds; S.overwrite=false;
+  render();
+}
+function inputPlusMinus(){
+  if(S.error) return;
+  S.entry = toggleSign(S.entry);
+  render();
+}
+function inputClear(){
+  if(S.error){ resetAll(); render(); return; }
+  const fresh = S.overwrite || S.entry==='0';
+  if(fresh) resetAll();
+  else S.entry='0';          // C: clear current entry, keep pending op
+  render();
+}
+function backspace(){
+  if(S.error){ resetAll(); render(); return; }
+  if(S.overwrite) return;
+  S.entry = S.entry.slice(0,-1);
+  if(S.entry===''||S.entry==='-') S.entry='0';
+  render();
+}
+function recall(n){
+  const ds = toDisplayStr(n);
+  if(ds===null) return;
+  resetAll(); S.entry=ds; S.overwrite=true;
+  render();
+}
+
+/* ========== render ========== */
+const exprEl = document.getElementById('expr');
+const srEl = document.getElementById('srValue');
+const annuns = {}; document.querySelectorAll('.lcd-annun span').forEach(s=>annuns[s.dataset.ann]=s);
+const clearBtn = document.querySelector('.key.ac');
+const histList = document.getElementById('histList');
+const histEmpty = document.getElementById('histEmpty');
+
+function render(){
+  if(S.error){
+    paint('E');
+    for(const k in annuns) annuns[k].classList.toggle('on', k==='E');
+    exprEl.textContent = S.exprText;
+    clearBtn.textContent='AC';
+    srEl.textContent='오류';
+    return;
+  }
+  paint(fmtSegStr(S.entry));
+  for(const k in annuns) annuns[k].classList.toggle('on', k===S.sym);
+  exprEl.textContent = S.exprText;
+  clearBtn.textContent = (S.overwrite || S.entry==='0') ? 'AC' : 'C';
+  srEl.textContent = fmtPlain(Number(S.entry));
+}
+function renderHistory(){
+  histEmpty.style.display = history.length ? 'none' : '';
+  histList.innerHTML='';
+  history.forEach(h=>{
+    const li=document.createElement('li');
+    const b=document.createElement('button');
+    b.className='hist-btn'; b.type='button';
+    b.innerHTML=`<span class="h-expr"></span><span class="h-res"></span>`;
+    b.querySelector('.h-expr').textContent=h.expr+' =';
+    b.querySelector('.h-res').textContent=fmtPlain(h.result);
+    b.setAttribute('aria-label', `${h.expr} 는 ${fmtPlain(h.result)}, 결과 불러오기`);
+    b.addEventListener('click',()=>recall(h.result));
+    li.appendChild(b); histList.appendChild(li);
+  });
+}
+
+/* ========== input wiring ========== */
+function handleButton(btn){
+  if(btn.dataset.digit!==undefined) return inputDigit(btn.dataset.digit);
+  switch(btn.dataset.action){
+    case 'op':    return inputOp(btn.dataset.op, btn.dataset.sym);
+    case 'eq':    return inputEquals();
+    case 'dot':   return inputDot();
+    case 'pct':   return inputPercent();
+    case 'pm':    return inputPlusMinus();
+    case 'clear': return inputClear();
+  }
+}
+document.getElementById('keys').addEventListener('click', e=>{
+  const btn=e.target.closest('.key'); if(btn) handleButton(btn);
+});
+document.addEventListener('keydown', e=>{
+  const k=e.key;
+  let btn=null;
+  if(k==='Backspace'){ e.preventDefault(); flash(document.querySelector('.key.ac')); return backspace(); }
+  if(/^[0-9]$/.test(k)) btn=document.querySelector(`[data-digit="${k}"]`);
+  else btn=document.querySelector(`[data-k="${cssEsc(k)}"]`);
+  if(!btn) return;
+  e.preventDefault();
+  flash(btn);
+  handleButton(btn);
+});
+function cssEsc(k){ return k.replace(/["\\]/g,'\\$&'); }
+function flash(btn){
+  if(!btn) return;
+  btn.classList.add('press');
+  setTimeout(()=>btn.classList.remove('press'),90);
+}
+
+/* ========== boot ========== */
+renderHistory();
+render();
+
+/* ========== self-check (ponytail) ========== */
+(function selfTest(){
+  const ok=(c,m)=>{ if(!c) throw new Error(m); };
+  try{
+    ok(compute(1240,'+',360)===1600,'add');
+    ok(compute(1600,'*',3)===4800,'mul');
+    ok(compute(0.1,'+',0.2)===0.3,'float dust');           // cleanNum
+    ok(!isFinite(compute(5,'/',0)),'div0 infinite');
+    ok(toDisplayStr(compute(5,'/',0))===null,'div0 rejected');
+    ok(toDisplayStr(1600)==='1600','display int');
+    ok(toDisplayStr(-0.5)==='-0.5','display neg dec');
+    ok(toDisplayStr(1e11)===null,'overflow rejected');
+    ok(fmtSegStr('1600')==='1,600','commas');
+    ok(fmtSegStr('0.')==='0.','trailing dot kept');
+    ok(percentValue(200,'+',10)===20,'percent of acc');    // 200 * 10%
+    ok(percentValue(null,null,50)===0.5,'bare percent');
+    ok(toggleSign('5')==='-5' && toggleSign('-5')==='5' && toggleSign('0')==='0','sign');
+    console.log('%c✅ 계산 엔진 셀프테스트 통과','color:#2a7');
+  }catch(err){
+    console.error('❌ 계산 엔진 셀프테스트 실패:',err.message);
+  }
+})();
+</script>
+</body>
+</html>

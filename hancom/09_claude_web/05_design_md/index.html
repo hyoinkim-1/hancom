@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>계산기</title>
+<style>
+  :root{
+    /* ---- LDSG tokens (CLAUDE_DESIGN.md) ---- */
+    --gray-100:#FCFCFC; --gray-150:#F5F5F5; --gray-300:#DFDFDF;
+    --gray-350:#C8C8C8; --gray-400:#B7B7B7; --gray-500:#949494;
+    --gray-800:#303030; --gray-900:#111111;
+    --black:#000000; --white:#FFFFFF;
+    --brand-primary:#06C755;        /* LINE Green */
+    --role-negative:#E8332E;
+    --role-link:#2C7DFA;
+    --role-disabled:#E4E4E4;
+    --radius-200:5px; --radius-300:7px; --radius-400:12px;
+    --border-100:1px;
+    --shadow-on-white-200:0 1px 6px rgba(0,0,0,.12);
+    --shadow-on-white-300:0 1px 20px rgba(0,0,0,.07);
+    --font-en:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+    --font:"LINE Seed KR","Pretendard Variable",Pretendard,var(--font-en);  /* KR 폴백 권장 */
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    min-height:100vh;
+    background:var(--gray-150);        /* 흰색 다음으로 빈번한 표면 배경 */
+    color:var(--black);
+    font-family:var(--font);
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:24px 16px;                 /* 16px = 지배적 사이드 마진 */
+    -webkit-font-smoothing:antialiased;
+  }
+  .col{
+    width:100%;
+    max-width:360px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    animation:rise .24s ease-out both;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* ---------- calculator card ---------- */
+  .calc{
+    background:var(--white);
+    border-radius:var(--radius-400);   /* 큰 화면 단위 = 12px */
+    box-shadow:var(--shadow-on-white-300);
+    padding:20px;                      /* modal/popup 본문 인셋 */
+  }
+
+  /* ---------- display ---------- */
+  .display{
+    text-align:right;
+    padding:8px 4px 16px;
+    overflow:hidden;
+  }
+  .expr{
+    min-height:20px;
+    font-size:14px;                    /* text-s */
+    line-height:1.5;
+    color:var(--gray-500);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .value{
+    margin-top:2px;
+    font-size:38px;                    /* title-xxl */
+    line-height:1.25;
+    font-weight:500;                   /* weight 200 = Medium */
+    color:var(--black);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    font-variant-numeric:tabular-nums;
+  }
+  .value.err{font-size:22px;color:var(--role-negative);}
+
+  /* ---------- keys ---------- */
+  .keys{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;                           /* spacing-200 */
+  }
+  .key{
+    height:56px;
+    border:none;
+    border-radius:var(--radius-200);   /* 기본 5px */
+    font-family:var(--font);
+    font-size:18px;                    /* text-l */
+    font-weight:500;
+    background:var(--gray-150);        /* 숫자키 = contained gray */
+    color:var(--black);
+    cursor:pointer;
+    transition:opacity .12s ease;      /* opacity 기반 상태 모델 */
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+    font-variant-numeric:tabular-nums;
+  }
+  .key.op,.key.eq{background:var(--brand-primary);color:var(--white);}
+  .key.fn{background:var(--white);border:var(--border-100) solid var(--gray-300);}
+  .key.zero{grid-column:span 2;text-align:center;}
+  /* Hover는 PC·웹 전용 (문서 규정) */
+  @media (hover:hover){ .key:hover{opacity:.7;} }
+  .key:active,.key.press{opacity:.5;}
+  .key:disabled{background:var(--role-disabled)!important;color:var(--white)!important;border-color:var(--role-disabled)!important;cursor:default;opacity:1;}
+  .key:focus-visible{outline:2px solid var(--role-link);outline-offset:2px;}
+
+  /* ---------- history ---------- */
+  .history{
+    background:var(--white);
+    border-radius:var(--radius-300);
+    box-shadow:var(--shadow-on-white-300);
+    padding:16px 20px;
+  }
+  .history h2{
+    margin:0 0 4px;
+    font-size:14px;                    /* title-xs */
+    font-weight:500;
+    color:var(--gray-500);
+  }
+  .hist-list{list-style:none;margin:0;padding:0;}
+  .hist-list li{border-bottom:var(--border-100) solid var(--gray-150);}
+  .hist-list li:last-child{border-bottom:none;}
+  .hist-btn{
+    width:100%;
+    text-align:right;
+    background:none;border:none;cursor:pointer;
+    padding:10px 2px;
+    display:block;
+    font-family:var(--font);
+    border-radius:var(--radius-200);
+  }
+  @media (hover:hover){ .hist-btn:hover{opacity:.7;} }
+  .hist-btn:active{opacity:.5;}
+  .hist-btn:focus-visible{outline:2px solid var(--role-link);outline-offset:1px;}
+  .hist-btn .h-expr{display:block;font-size:14px;color:var(--gray-500);}
+  .hist-btn .h-res{display:block;font-size:18px;color:var(--black);font-weight:500;margin-top:1px;font-variant-numeric:tabular-nums;}
+  .hist-empty{
+    margin:0;padding:12px 2px;
+    text-align:center;
+    color:var(--gray-400);
+    font-size:14px;
+    line-height:1.6;
+  }
+  .attrib{
+    text-align:center;
+    font-size:12px;
+    color:var(--gray-400);
+    margin:0;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
+  }
+</style>
+</head>
+<body>
+  <div class="col">
+    <main class="calc" role="application" aria-label="계산기">
+      <div class="display">
+        <div class="expr" id="expr" aria-hidden="true"></div>
+        <div class="value" id="value" aria-hidden="true">0</div>
+        <div id="srValue" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">0</div>
+      </div>
+
+      <div class="keys" id="keys">
+        <button class="key fn" data-action="clear" data-k="Escape" aria-label="전체 지우기">AC</button>
+        <button class="key fn" data-action="pm" aria-label="부호 바꾸기">±</button>
+        <button class="key fn" data-action="pct" data-k="%" aria-label="퍼센트">%</button>
+        <button class="key op" data-action="op" data-op="/" data-sym="÷" data-k="/" aria-label="나누기">÷</button>
+
+        <button class="key" data-digit="7" data-k="7">7</button>
+        <button class="key" data-digit="8" data-k="8">8</button>
+        <button class="key" data-digit="9" data-k="9">9</button>
+        <button class="key op" data-action="op" data-op="*" data-sym="×" data-k="*" aria-label="곱하기">×</button>
+
+        <button class="key" data-digit="4" data-k="4">4</button>
+        <button class="key" data-digit="5" data-k="5">5</button>
+        <button class="key" data-digit="6" data-k="6">6</button>
+        <button class="key op" data-action="op" data-op="-" data-sym="−" data-k="-" aria-label="빼기">−</button>
+
+        <button class="key" data-digit="1" data-k="1">1</button>
+        <button class="key" data-digit="2" data-k="2">2</button>
+        <button class="key" data-digit="3" data-k="3">3</button>
+        <button class="key op" data-action="op" data-op="+" data-sym="+" data-k="+" aria-label="더하기">＋</button>
+
+        <button class="key zero" data-digit="0" data-k="0">0</button>
+        <button class="key" data-action="dot" data-k="." aria-label="소수점">.</button>
+        <button class="key eq" data-action="eq" data-k="Enter" aria-label="계산">=</button>
+      </div>
+    </main>
+
+    <aside class="history" aria-label="계산 기록">
+      <h2>기록</h2>
+      <ol class="hist-list" id="histList"></ol>
+      <p class="hist-empty" id="histEmpty">아직 계산 기록이 없어요.<br>숫자를 눌러 시작하세요.</p>
+    </aside>
+
+    <p class="attrib">Styled with LINE Design System for Global Family Service.</p>
+  </div>
+
+<script>
+"use strict";
+/* ========== number helpers (pure — 04에서 재사용) ========== */
+const cleanNum = r => Number(r.toPrecision(12));           // kills 0.1+0.2 float dust
+const NF = new Intl.NumberFormat('en-US',{maximumFractionDigits:8});
+const fmtPlain = n => isFinite(n) ? NF.format(n) : '오류';
+
+function compute(a,op,b){
+  let r;
+  switch(op){ case'+':r=a+b;break; case'-':r=a-b;break; case'*':r=a*b;break; case'/':r=a/b;break; }
+  return cleanNum(r);
+}
+// number -> clean plain-decimal string within display capacity, or null if it doesn't fit
+function toDisplayStr(n){
+  if(!isFinite(n)) return null;
+  const neg = n<0; let abs=Math.abs(n);
+  const cap = neg?11:12;
+  const intDigits = abs<1 ? 1 : Math.floor(Math.log10(abs))+1;
+  if(intDigits>cap) return null;
+  const dec = Math.max(0, cap-intDigits);
+  let s = abs.toFixed(Math.min(dec,8));
+  if(s.includes('.')) s=s.replace(/0+$/,'').replace(/\.$/,'');
+  if(s.split('.')[0].length>cap) return null;   // rounding pushed it over
+  return (neg?'-':'')+s;
+}
+// entry string -> display string (adds commas, keeps trailing dot while typing)
+function fmtSegStr(entry){
+  if(entry===''||entry==='-') entry='0';
+  const neg = entry[0]==='-';
+  let body = neg?entry.slice(1):entry;
+  const dot = body.includes('.');
+  let ip, fp='';
+  if(dot){ [ip,fp]=body.split('.'); } else { ip=body; }
+  if(ip==='') ip='0';
+  ip = ip.replace(/^0+(?=\d)/,'');
+  if(ip==='') ip='0';
+  ip = ip.replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  return (neg?'-':'') + ip + (dot?'.'+fp:'');
+}
+function percentValue(acc,op,val){
+  return cleanNum((op!==null && acc!==null) ? acc*(val/100) : val/100);
+}
+function toggleSign(entry){
+  if(entry==='0'||entry==='') return entry;
+  return entry[0]==='-' ? entry.slice(1) : '-'+entry;
+}
+function digitCount(entry){ return entry.replace(/[-.]/g,'').length; }
+
+/* ========== engine (state machine — 04에서 재사용) ========== */
+const S = { entry:'0', acc:null, op:null, sym:'', overwrite:true, error:false, exprText:'' };
+const history = [];
+const CAP = 12;   // 표시 자릿수
+
+function resetAll(){ Object.assign(S,{entry:'0',acc:null,op:null,sym:'',overwrite:true,error:false,exprText:''}); }
+function setError(msg){ S.error=true; S.exprText=msg; }
+
+function inputDigit(d){
+  if(S.error) resetAll();
+  if(S.overwrite){ S.entry=d; S.overwrite=false; }
+  else if(S.entry==='0'){ S.entry=d; }
+  else{
+    const cap = S.entry[0]==='-'?CAP-1:CAP;
+    if(digitCount(S.entry)<cap) S.entry+=d;
+  }
+  render();
+}
+function inputDot(){
+  if(S.error) resetAll();
+  if(S.overwrite){ S.entry='0.'; S.overwrite=false; }
+  else if(!S.entry.includes('.')) S.entry+='.';
+  render();
+}
+function inputOp(op,sym){
+  if(S.error) return;
+  if(S.op!==null && !S.overwrite){
+    const r = compute(S.acc,S.op,Number(S.entry));
+    if(toDisplayStr(r)===null){ setError(isFinite(r)?'자릿수 초과':'0으로 나눌 수 없어요'); render(); return; }
+    S.acc=r; S.entry=toDisplayStr(r);
+  } else if(S.acc===null){
+    S.acc=Number(S.entry);
+  }
+  S.op=op; S.sym=sym; S.overwrite=true;
+  S.exprText = fmtPlain(S.acc)+' '+sym;
+  render();
+}
+function inputEquals(){
+  if(S.error || S.op===null) return;
+  const a=S.acc, b=Number(S.entry), op=S.op, sym=S.sym;
+  const r=compute(a,op,b);
+  const exprFull = `${fmtPlain(a)} ${sym} ${fmtPlain(b)} =`;
+  if(toDisplayStr(r)===null){ setError(isFinite(r)?'자릿수 초과':'0으로 나눌 수 없어요'); render(); return; }
+  history.unshift({expr:`${fmtPlain(a)} ${sym} ${fmtPlain(b)}`, result:r});
+  renderHistory();
+  S.entry=toDisplayStr(r); S.acc=null; S.op=null; S.sym=''; S.overwrite=true;
+  S.exprText=exprFull;
+  render();
+}
+function inputPercent(){
+  if(S.error) return;
+  const r = percentValue(S.acc,S.op,Number(S.entry));
+  const ds = toDisplayStr(r);
+  if(ds===null){ setError('자릿수 초과'); render(); return; }
+  S.entry=ds; S.overwrite=false;
+  render();
+}
+function inputPlusMinus(){
+  if(S.error) return;
+  S.entry = toggleSign(S.entry);
+  render();
+}
+function inputClear(){
+  if(S.error){ resetAll(); render(); return; }
+  const fresh = S.overwrite || S.entry==='0';
+  if(fresh) resetAll();
+  else S.entry='0';          // C: clear current entry, keep pending op
+  render();
+}
+function backspace(){
+  if(S.error){ resetAll(); render(); return; }
+  if(S.overwrite) return;
+  S.entry = S.entry.slice(0,-1);
+  if(S.entry===''||S.entry==='-') S.entry='0';
+  render();
+}
+function recall(n){
+  const ds = toDisplayStr(n);
+  if(ds===null) return;
+  resetAll(); S.entry=ds; S.overwrite=true;
+  render();
+}
+
+/* ========== render ========== */
+const exprEl = document.getElementById('expr');
+const valueEl = document.getElementById('value');
+const srEl = document.getElementById('srValue');
+const clearBtn = document.querySelector('[data-action="clear"]');
+const histList = document.getElementById('histList');
+const histEmpty = document.getElementById('histEmpty');
+
+function render(){
+  if(S.error){
+    valueEl.textContent='오류';
+    valueEl.classList.add('err');
+    exprEl.textContent = S.exprText;
+    clearBtn.textContent='AC';
+    srEl.textContent='오류';
+    return;
+  }
+  valueEl.classList.remove('err');
+  valueEl.textContent = fmtSegStr(S.entry);
+  exprEl.textContent = S.exprText;
+  clearBtn.textContent = (S.overwrite || S.entry==='0') ? 'AC' : 'C';
+  srEl.textContent = fmtPlain(Number(S.entry));
+}
+function renderHistory(){
+  histEmpty.style.display = history.length ? 'none' : '';
+  histList.innerHTML='';
+  history.forEach(h=>{
+    const li=document.createElement('li');
+    const b=document.createElement('button');
+    b.className='hist-btn'; b.type='button';
+    b.innerHTML=`<span class="h-expr"></span><span class="h-res"></span>`;
+    b.querySelector('.h-expr').textContent=h.expr+' =';
+    b.querySelector('.h-res').textContent=fmtPlain(h.result);
+    b.setAttribute('aria-label', `${h.expr} 는 ${fmtPlain(h.result)}, 결과 불러오기`);
+    b.addEventListener('click',()=>recall(h.result));
+    li.appendChild(b); histList.appendChild(li);
+  });
+}
+
+/* ========== input wiring ========== */
+function handleButton(btn){
+  if(btn.dataset.digit!==undefined) return inputDigit(btn.dataset.digit);
+  switch(btn.dataset.action){
+    case 'op':    return inputOp(btn.dataset.op, btn.dataset.sym);
+    case 'eq':    return inputEquals();
+    case 'dot':   return inputDot();
+    case 'pct':   return inputPercent();
+    case 'pm':    return inputPlusMinus();
+    case 'clear': return inputClear();
+  }
+}
+document.getElementById('keys').addEventListener('click', e=>{
+  const btn=e.target.closest('.key'); if(btn) handleButton(btn);
+});
+document.addEventListener('keydown', e=>{
+  const k=e.key;
+  let btn=null;
+  if(k==='Backspace'){ e.preventDefault(); flash(clearBtn); return backspace(); }
+  if(/^[0-9]$/.test(k)) btn=document.querySelector(`[data-digit="${k}"]`);
+  else btn=document.querySelector(`[data-k="${cssEsc(k)}"]`);
+  if(!btn) return;
+  e.preventDefault();
+  flash(btn);
+  handleButton(btn);
+});
+function cssEsc(k){ return k.replace(/["\\]/g,'\\$&'); }
+function flash(btn){
+  if(!btn) return;
+  btn.classList.add('press');
+  setTimeout(()=>btn.classList.remove('press'),90);
+}
+
+/* ========== boot ========== */
+renderHistory();
+render();
+
+/* ========== self-check (ponytail) ========== */
+(function selfTest(){
+  const ok=(c,m)=>{ if(!c) throw new Error(m); };
+  try{
+    ok(compute(1240,'+',360)===1600,'add');
+    ok(compute(1600,'*',3)===4800,'mul');
+    ok(compute(0.1,'+',0.2)===0.3,'float dust');
+    ok(!isFinite(compute(5,'/',0)),'div0 infinite');
+    ok(toDisplayStr(compute(5,'/',0))===null,'div0 rejected');
+    ok(toDisplayStr(1600)==='1600','display int');
+    ok(toDisplayStr(-0.5)==='-0.5','display neg dec');
+    ok(toDisplayStr(1e13)===null,'overflow rejected');
+    ok(fmtSegStr('1600')==='1,600','commas');
+    ok(fmtSegStr('0.')==='0.','trailing dot kept');
+    ok(percentValue(200,'+',10)===20,'percent of acc');
+    ok(percentValue(null,null,50)===0.5,'bare percent');
+    ok(toggleSign('5')==='-5' && toggleSign('-5')==='5' && toggleSign('0')==='0','sign');
+    console.log('%c✅ 계산 엔진 셀프테스트 통과','color:#06C755');
+  }catch(err){
+    console.error('❌ 계산 엔진 셀프테스트 실패:',err.message);
+  }
+})();
+</script>
+</body>
+</html>

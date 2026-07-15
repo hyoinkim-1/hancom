@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>계산기 - SOCAR Frame 2.0</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/npm/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* SOCAR Frame 2.0 Colors */
+      --primary-regular: oklch(0.620 0.219 257);   /* blue-500 */
+      --primary-strong: oklch(0.586 0.236 261);    /* blue-600 */
+      --blue-50: oklch(0.962 0.022 248);
+      --blue-100: oklch(0.917 0.040 240);
+
+      --gray-50: oklch(0.984 0.002 286);
+      --gray-100: oklch(0.967 0.004 271);
+      --gray-200: oklch(0.927 0.009 264);
+      --gray-300: oklch(0.851 0.018 264);
+      --gray-400: oklch(0.781 0.027 267);
+      --gray-500: oklch(0.687 0.035 265);
+      --gray-600: oklch(0.519 0.039 263);
+      --gray-800: oklch(0.331 0.034 264);
+      --gray-1000: oklch(0.211 0.026 261);
+
+      --text-strong: var(--gray-1000);
+      --text-primary: var(--gray-800);
+      --text-secondary: var(--gray-600);
+      --text-disabled: var(--gray-400);
+
+      --background-regular: var(--gray-100);
+      --border-regular: var(--gray-200);
+      --divider-regular: var(--gray-200);
+      --white: oklch(1.000 0.000 0);
+
+      --negative-regular: oklch(0.649 0.219 19);
+
+      --shadow-sm: 0 1px 2px oklch(0.211 0.026 261 / 0.04);
+      --pressed-regular: oklch(0.211 0.026 261 / 0.06);
+    }
+
+    body {
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background-color: var(--background-regular);
+      color: var(--text-primary);
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calculator {
+      width: 100%;
+      max-width: 375px;
+      background-color: var(--white);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--divider-regular);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .display {
+      margin-bottom: 20px;
+      padding: 16px;
+      background-color: var(--background-regular);
+      border-radius: 12px;
+      border: 1px solid var(--border-regular);
+    }
+
+    .display-prev {
+      font-size: 14px;
+      line-height: 22px;
+      color: var(--text-secondary);
+      min-height: 22px;
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .display-current {
+      font-size: 28px;
+      line-height: 36px;
+      color: var(--text-strong);
+      text-align: right;
+      word-wrap: break-word;
+      word-break: break-all;
+      font-weight: 700;
+      min-height: 36px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
+      font-family: inherit;
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    /* Button Hierarchy */
+    button.digit {
+      background-color: var(--background-regular);
+      color: var(--text-primary);
+      border: 1px solid var(--border-regular);
+      font-weight: 700;
+    }
+
+    button.digit:active {
+      transform: scale(0.92);
+      background-color: var(--pressed-regular);
+    }
+
+    button.operator {
+      background-color: var(--blue-100);
+      color: var(--primary-regular);
+      font-weight: 600;
+    }
+
+    button.operator:active {
+      transform: scale(0.92);
+      background-color: var(--primary-strong);
+      color: var(--white);
+    }
+
+    button.equals {
+      background-color: var(--primary-regular);
+      color: var(--white);
+      font-weight: 600;
+      grid-column: span 2;
+    }
+
+    button.equals:active {
+      transform: scale(0.92);
+      background-color: var(--primary-strong);
+    }
+
+    button.clear {
+      background-color: var(--negative-regular);
+      color: var(--white);
+      font-weight: 600;
+      grid-column: span 2;
+    }
+
+    button.clear:active {
+      transform: scale(0.92);
+      filter: brightness(0.9);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 320px) {
+      .calculator {
+        padding: 12px;
+      }
+
+      .display {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+
+      .display-current {
+        font-size: 24px;
+        line-height: 32px;
+      }
+
+      .buttons {
+        gap: 6px;
+      }
+
+      button {
+        min-height: 40px;
+        padding: 8px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="display">
+      <div class="display-prev" id="prev">0</div>
+      <div class="display-current" id="current">0</div>
+    </div>
+    <div class="buttons">
+      <button class="clear" id="ac">AC</button>
+      <button class="operator" data-op="%">%</button>
+      <button class="operator" data-op="/">÷</button>
+      <button class="operator" data-op="*">×</button>
+
+      <button class="digit" data-digit="7">7</button>
+      <button class="digit" data-digit="8">8</button>
+      <button class="digit" data-digit="9">9</button>
+      <button class="operator" data-op="-">−</button>
+
+      <button class="digit" data-digit="4">4</button>
+      <button class="digit" data-digit="5">5</button>
+      <button class="digit" data-digit="6">6</button>
+      <button class="operator" data-op="+">+</button>
+
+      <button class="digit" data-digit="1">1</button>
+      <button class="digit" data-digit="2">2</button>
+      <button class="digit" data-digit="3">3</button>
+      <button class="operator" data-op="+/-">±</button>
+
+      <button class="digit" data-digit="0">0</button>
+      <button class="digit" data-digit=".">.</button>
+      <button class="equals" id="equals">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = {
+      prev: document.getElementById('prev'),
+      current: document.getElementById('current')
+    };
+
+    let state = {
+      prevValue: null,
+      currentValue: '0',
+      operator: null,
+      newNumber: true
+    };
+
+    const digitButtons = document.querySelectorAll('button[data-digit]');
+    const operatorButtons = document.querySelectorAll('button[data-op]');
+    const acButton = document.getElementById('ac');
+    const equalsButton = document.getElementById('equals');
+
+    function updateDisplay() {
+      display.current.textContent = state.currentValue;
+      if (state.operator && state.prevValue !== null) {
+        display.prev.textContent = `${state.prevValue} ${state.operator}`;
+      } else if (state.prevValue !== null) {
+        display.prev.textContent = state.prevValue;
+      } else {
+        display.prev.textContent = '0';
+      }
+    }
+
+    function handleDigit(digit) {
+      if (state.newNumber) {
+        state.currentValue = digit === '.' ? '0.' : digit;
+        state.newNumber = false;
+      } else {
+        if (digit === '.') {
+          if (!state.currentValue.includes('.')) {
+            state.currentValue += digit;
+          }
+        } else {
+          state.currentValue += digit;
+        }
+      }
+      updateDisplay();
+    }
+
+    function handleOperator(op) {
+      const current = parseFloat(state.currentValue);
+
+      if (state.operator && !state.newNumber) {
+        const result = calculate(state.prevValue, current, state.operator);
+        if (result === null) {
+          state.currentValue = '오류';
+          updateDisplay();
+          return;
+        }
+        state.currentValue = String(result);
+        state.prevValue = result;
+      } else {
+        state.prevValue = current;
+      }
+
+      state.operator = op === '+/-' ? null : op;
+      if (op === '+/-') {
+        const val = parseFloat(state.currentValue);
+        state.currentValue = String(-val);
+      }
+      state.newNumber = true;
+      updateDisplay();
+    }
+
+    function calculate(a, b, op) {
+      switch (op) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': return b === 0 ? null : a / b;
+        case '%': return a % b;
+        default: return b;
+      }
+    }
+
+    function handleEquals() {
+      if (!state.operator || state.newNumber) return;
+
+      const current = parseFloat(state.currentValue);
+      const result = calculate(state.prevValue, current, state.operator);
+
+      if (result === null) {
+        state.currentValue = '오류';
+      } else {
+        state.currentValue = String(result);
+        state.prevValue = null;
+        state.operator = null;
+      }
+
+      state.newNumber = true;
+      updateDisplay();
+    }
+
+    function handleClear() {
+      state = {
+        prevValue: null,
+        currentValue: '0',
+        operator: null,
+        newNumber: true
+      };
+      updateDisplay();
+    }
+
+    digitButtons.forEach(btn => {
+      btn.addEventListener('click', () => handleDigit(btn.dataset.digit));
+    });
+
+    operatorButtons.forEach(btn => {
+      btn.addEventListener('click', () => handleOperator(btn.dataset.op));
+    });
+
+    equalsButton.addEventListener('click', handleEquals);
+    acButton.addEventListener('click', handleClear);
+
+    updateDisplay();
+  </script>
+</body>
+</html>
