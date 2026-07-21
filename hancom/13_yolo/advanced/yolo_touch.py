@@ -7,9 +7,9 @@ cap = cv2.VideoCapture(stream_url)
 assert cap.isOpened(), "스트림 열기 실패 — 경로/네트워크 확인"
 
 # 2. 이메일 정보 설정 (Gmail 앱 비밀번호 사용)
-from_email = "daepo333@gmail.com"     # 발신 Gmail 주소
-password   = "xtseyoypjgnlfxvq"     # 일반 비밀번호 아님 (앱 비밀번호 전용)
-to_email   = "kimnioyh@gmail.com"  # 수신 주소 (자신 또는 관리자)
+from_email = ""     # 발신 Gmail 주소
+password   = ""     # 일반 비밀번호 아님 (앱 비밀번호 전용)
+to_email   = ""  # 수신 주소 (자신 또는 관리자)
 
 # 3. 모델 로드 및 알람 객체 생성
 google_alarm = solutions.SecurityAlarm(
