@@ -17,7 +17,11 @@ const groq = async (question)=>{
     })
     const data = await groqRes.json()
 
-    return data.choices?.[0]?.message?.content || data
+    if (!groqRes.ok || data.error) {
+        throw new Error(data.error?.message || `Groq API error (${groqRes.status})`)
+    }
+
+    return data.choices?.[0]?.message?.content
 }
 
 // console.log(await groq("hi"));

@@ -1,34 +1,25 @@
-import { useState } from 'react';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { ChatSection } from './components/ChatSection';
+import { useGroqChat } from './hooks/useGroqChat';
 
 const App = () => {
-
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>("");
-  const url = 'http://localhost:3000'
-
-  const postFetchTest = async (str: string) => {
-    const data = await fetch(`${url}/api/groq`,{
-      method : 'POST',
-      headers : {'Content-Type' : 'application/json'},
-      body : JSON.stringify({question : str})
-    })
-    const res = await data.json();
-
-    setAnswers((arr)=>[...arr, res.answer]);
-    setInputValue(()=>"");
-    }
+  const { messages, isLoading, error, sendMessage } = useGroqChat();
 
   return (
-    <div>
-      <input value={inputValue} onChange={(e)=>setInputValue(e.target.value)} >
-        
-      </input>
-      <button onClick={()=>postFetchTest(inputValue)}>보내기</button>
-      {answers.map((answer:string, i:number)=>{
-        return <div key={i}>{answer}</div>
-      })}
-    </div>
-  )
-}
+    <>
+      <Header />
+      <main className="main">
+        <ChatSection
+          messages={messages}
+          isLoading={isLoading}
+          error={error}
+          onSubmit={sendMessage}
+        />
+      </main>
+      <Footer />
+    </>
+  );
+};
 
-export default App
+export default App;
