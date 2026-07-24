@@ -1,0 +1,6 @@
+{
+  "name": "hancom-plugin",
+  "description": "오늘 한 작업을 스탠드업 형식으로 요약해주는 미니 플러그인",
+  "version": "0.1.0",
+  "author": { "name": "hyoinkim-1" }
+}

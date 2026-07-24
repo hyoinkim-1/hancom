@@ -1,0 +1,11 @@
+{
+  "name": "hancom-marketplace",
+  "owner": { "name": "hyoinkim-1" },
+  "plugins": [
+    {
+      "name": "hancom-plugin",
+      "source": "./hancom-plugin",
+      "description": "오늘 git 작업 내역을 스탠드업 형식으로 요약해주는 미니 플러그인"
+    }
+  ]
+}
